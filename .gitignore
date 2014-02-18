@@ -1,0 +1,12 @@
+# Global Ignores
+.DS_Store
+.svn
+*.swp
+*.psd
+ehthumbs.db
+Thumbs.db
+nbproject
+.git.bak
+vendor
+
+# Application Ignores
