@@ -241,7 +241,7 @@ var TimeKeeper = ( function( $ ) {
                 $( my.dom.alerts.delete ).hide();
             })
             
-            $(my.dom.links.delete_btn).click( function() {
+            $(my.dom.links.confirm_delete).click( function() {
                 
                 var posted = {
                     'id': that.href.split('/').splice(-1)[0],

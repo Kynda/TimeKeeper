@@ -255,7 +255,7 @@ class Time {
             'notes'     => $request->get('notes'),
             'billable'  => ( $request->get('billable') ) ? 1 : 0
         );
-
+        
         $this->db->executeQuery( $sql, $params );
     }
     
