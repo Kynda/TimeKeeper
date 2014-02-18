@@ -141,6 +141,7 @@ var TimeKeeper = ( function( $ ) {
             $.post('/save',  $editForm.serialize(), function( data ) {
                 
                 $hours.attr('disabled', 'disabled');
+                my.oldEnd = $(my.dom.forms.edit + ' ' + my.dom.input.end).val();
                 
                 _refreshTimesTable( data );
                 
@@ -174,7 +175,9 @@ var TimeKeeper = ( function( $ ) {
             
             $.get( this.href, function( data ) {
                 
-                _insertEditForm( data );
+                my.oldEnd = null;
+                
+                _insertEditForm( data );                                
                 
                 window.scrollTo(0,0);
                 
@@ -199,20 +202,14 @@ var TimeKeeper = ( function( $ ) {
             
             $(this).data('bound', true);
             
-            $.get('/edit', function( data ) {
-                
-                $start = $(my.dom.forms.edit + ' ' + my.dom.input.start);
-                $end = $(my.dom.forms.edit + ' ' + my.dom.input.end);
-                
-                if( $end.length && $end.val() != '00:00:00' )
-                {
-                    my.oldEnd = $end.val();
-                } else {
-                    my.oldEnd = '08:30:00';
-                }
+            $.get('/edit', function( data ) {                                      
                 
                 _insertEditForm( data );
                 _setDefaults();
+                
+                if( !my.oldEnd ) {
+                    my.oldEnd = '08:30:00';
+                }
                 
             } );
             
