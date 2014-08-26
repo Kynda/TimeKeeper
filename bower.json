@@ -1,0 +1,28 @@
+{
+  "name": "time",
+  "version": "1.1.0",
+  "description": "Simple personal time-keeping software",
+  "moduleType": [
+    "globals"
+  ],
+  "authors": [
+    "Joseph Hallenbeck"
+  ],
+  "license": "MIT",
+  "homepage": "joehallenbeck.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "web/vendors"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.2.0",
+    "jquery": "~2.1.1",
+    "jquery-ui": "~1.11.1",
+    "date.format": "~1.2.3"
+  }
+}
