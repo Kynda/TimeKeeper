@@ -1,13 +1,14 @@
 <?php
 /**
  * @version 1.0.0
- * @package Genus
+ * @package Time
  * @author Joe Hallenbeck
  * 
  * @todo Add Auth Service Provider / Multi-user support.
  */
 
 require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../config.php';
 
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -23,13 +24,7 @@ $app = new Silex\Application();
  *******************************************************************/
 
 $app->register( new Silex\Provider\DoctrineServiceProvider(), array(
-   'db.options' => array(
-       'driver'     => 'pdo_mysql',
-       'dbname'     => 'timekeeper',
-       'user'       => 'drwho2',
-       'password'   => 'lqBucSZun2gNsTou4ade',       
-   )
-));
+   'db.options' => $config['db'] ));
 
 $app->register( new Kynda\Provider\ViewServiceProvider(), array(
     'view.options' => array(
@@ -95,7 +90,9 @@ $app->get('/', function () use ($app) {
     return $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
 });
 
-$app->get('/list/{start}/{end}/{accounts}/{tasks}/{billable}/{orderby}', function( $start, $end, $accounts, $tasks, $billable, $orderby ) use( $app ) {    
+$app->get('/list/{start}/{end}/{accounts}/{tasks}/{billable}/{orderby}', 
+    function( $start, $end, $accounts, $tasks, $billable, $orderby ) 
+        use( $app ) {    
     
     $view = $app['view'];
     

@@ -9,5 +9,8 @@ nbproject
 .git.bak
 vendor
 config.php
+build
+web/vendors
+composer.lock
 
 # Application Ignores
