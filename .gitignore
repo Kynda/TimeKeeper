@@ -8,5 +8,6 @@ Thumbs.db
 nbproject
 .git.bak
 vendor
+config.php
 
 # Application Ignores
