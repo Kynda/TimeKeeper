@@ -15,7 +15,6 @@ Time is a very simple time-keeping application for tracking billable hours, acco
 - Bower
 
 ###Installation
-
 - Note: This is not for public facing use.
 - Import the MySQL dump (`database_installer.sql`) into your MySQL database of
   choice.
@@ -29,17 +28,18 @@ Time is a very simple time-keeping application for tracking billable hours, acco
 - The Silex MicroFramework
 - Bootstrap
 - Composer
+- Bower
 - DBAL
-
-###Future Features
-- PHP User Authentication for multiple users and PHP based user login.
-- SuperAdmin support for allow/disallowing account creation and team-member assignment.
-- Team support where multiple users can review team-member contributions to projects.
-- Integration with Task to allow closing of outstanding tickets through the Timeinterface.
-- Refactoring into a Silex Module for inclusion in other projects.
+- jQuery
 
 ##ChangeLog
 ----------------------------------------
+
+###Version 1.1.0
+####August 28, 2014
+- Converted all views to bootstrap3
+- Front-end libraries now load through bower making installation easier
+- Config.php now defines the database parameters
 
 ###Version 1.0.0
 ####April 3, 2013
