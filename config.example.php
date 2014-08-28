@@ -11,6 +11,8 @@
 
 $config = array();
 
+$config['name'] = 'Joe';
+
 $config['db'] = array(
                     'driver'     => 'pdo_mysql',
                     'dbname'     => 'timekeeper',
