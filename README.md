@@ -11,6 +11,19 @@ Time is a very simple time-keeping application for tracking billable hours, acco
 - PHP 5.3 or Greater
 - MySQL
 - Localhost Environment or htaccess authentication
+- Composer
+- Bower
+
+###Installation
+
+- Note: This is not for public facing use.
+- Import the MySQL dump (`database_installer.sql`) into your MySQL database of
+  choice.
+- Rename `config.example.php` to `config.php` and fill in your database name,
+  user name, and password
+- Run `composer install`
+- Run `bower install`
+- Should be done!
 
 ###Time is built using
 - The Silex MicroFramework
