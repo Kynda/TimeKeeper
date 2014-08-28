@@ -6170,6 +6170,7 @@ button.close {
   position: fixed;
   top: 50%;
   left: 40%;
+  display: none;
 }
 #time-table {
   white-space: nowrap;
