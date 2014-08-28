@@ -33,17 +33,16 @@ $app->register( new Kynda\Provider\ViewServiceProvider(), array(
         'body'      => 'body'
     ),    
     'view.postJavascript' => array(
-        '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
-        '/js/vendor/bootstrap.min.js',
-        '/js/vendor/jquery-ui-1.10.2.custom.js',
-        '/js/vendor/date.format.js',
+        '/vendors/jquery/dist/jquery.min.js',
+        '/vendors/bootstrap/dist/js/bootstrap.min.js',
+        '/vendors/jquery-ui/jquery-ui.min.js',
+        '/vendors/date.format/date.format.js',
         '/js/timekeeper.js',
         '/js/main.js'
     ),
     'view.styles' => array(
-        '/css/bootstrap.min.css',
-        '/css/jquery-ui.css',
-        '/css/jquery.ui.theme.css',
+        '/vendors/jquery-ui/themes/cupertino/jquery-ui.min.css',
+        '/vendors/jquery-ui/themes/cupertino/theme.css',
         '/css/style.css'
     )
 ) );
@@ -92,12 +91,12 @@ $app->get('/', function () use ($app) {
 
 $app->get('/list/{start}/{end}/{accounts}/{tasks}/{billable}/{orderby}', 
     function( $start, $end, $accounts, $tasks, $billable, $orderby ) 
-        use( $app ) {    
+        use( $app, $config ) {    
     
     $view = $app['view'];
     
     $view->pagetitle = 'Time';
-    $view->name = 'Joe';    
+    $view->name = $config['name'];    
     $view->uri = "/list/$start/$end/$accounts/$tasks/$billable";        
     
     $params = array(        
@@ -114,7 +113,7 @@ $app->get('/list/{start}/{end}/{accounts}/{tasks}/{billable}/{orderby}',
     $view->accounts = $app['time']->getAccounts();    
     $view->items = $app['time']->getFilteredCollection( func_get_args() );
 
-    return $view->page( array( 'panels/tabs', 'panels/list' ) );
+    return $view->page( array( 'panels/list', 'panels/tabs', 'panels/table' ) );
 })
 ->value('start', date('Y-m-d') )
 ->value('end', date('Y-m-d' ) )
@@ -131,7 +130,7 @@ $app->get('/edit/{id}', function( $id ) use ( $app ) {
     $view->tasks = $app['time']->getTasks();
     $view->accounts = $app['time']->getAccounts();
     
-    return $view->show( 'panels/edit' );
+    return $view->show( 'forms/edit' );
     
 })
 ->value( 'id', 0 );
