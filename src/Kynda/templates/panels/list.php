@@ -2,7 +2,7 @@
     
     <h1>Hello, <?= $name ?></h1>
     
-    <ul class="inline" id="totals">
+    <ul class="list-inline" id="totals">
         
     <?php if( isset( $items[0] ) ): ?>
         <li><strong>Total Hours:</strong> <?= $items[0]['total_hours'] ?></li>

@@ -3,11 +3,11 @@
     <div class="tabbable">
         <ul class="nav nav-justified nav-tabs" role="tablist">
             <li class="active">
-                <a href="#filter" data-toggle="tab">Filter</a>
+                <a href="#filter" data-toggle="tab" id="filter-link">Filter</a>
             </li>        
             <li>
                 <a href="#add" data-toggle="tab" id="add-link">Add</a>
-                </li>
+            </li>
         </ul>
     </div>
 

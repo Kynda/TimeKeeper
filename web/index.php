@@ -122,6 +122,34 @@ $app->get('/list/{start}/{end}/{accounts}/{tasks}/{billable}/{orderby}',
 ->value('billable', 'any')
 ->value('orderby', 'date,start' );
 
+$app->get('/filter/{start}/{end}/{accounts}/{tasks}/{billable}/{orderby}', 
+    function( $start, $end, $accounts, $tasks, $billable, $orderby ) use ( $app ) {
+
+    $view = $app['view'];
+
+    $params = array(
+        'start' => $start,
+        'end' => $end,
+        'paccounts' => explode(',', $accounts ),
+        'ptasks' => explode(',', $tasks ),
+        'billable' => $billable,
+        'orderby' => $orderby
+    );
+    $view->add( $params );
+
+    $view->tasks = $app['time']->getTasks();
+    $view->accounts = $app['time']->getAccounts();
+
+    return $view->show( 'forms/filter' );
+
+})
+->value('start', date('Y-m-d') )
+->value('end', date('Y-m-d') )
+->value('accounts', 'any')
+->value('tasks', 'any') 
+->value('billable', 'any')
+->value('orderby', 'date,start');
+
 $app->get('/edit/{id}', function( $id ) use ( $app ) {
     
     $view = $app['view'];       

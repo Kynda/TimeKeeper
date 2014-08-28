@@ -23,14 +23,15 @@ var TimeKeeper = ( function( $ ) {
             'containers': {
                 'times': null,
                 'totals': null,
-                'add': null
+                'add': null,
+                'filter': null
             },
             'links': {
                 'add': null,
+                'filter': null,
                 'delete': null,
                 'cancel_delete': null,
                 'confirm_delete': null,
-                'tabs': null,
                 'thead': null
             },
             'alerts': {
@@ -87,7 +88,7 @@ var TimeKeeper = ( function( $ ) {
         
         if( paths[7] )
         {
-            var order = paths[7].search('asc') == -1 ? 'asc' : 'desc';
+            var order = paths[7].search('asc') === -1 ? 'asc' : 'desc';
             
             $.each( $(my.dom.links.thead), function( index, value ) {
                
@@ -108,11 +109,26 @@ var TimeKeeper = ( function( $ ) {
             _datePicker();
             _hourCalculator();
             my.onEditSubmit();
-
+            
             $( my.dom.input.return_uri ).val( window.location.pathname );
             $( my.dom.input.account ).autocomplete({ source: accounts });
             $( my.dom.input.task ).autocomplete({ source: tasks });
-            $( my.dom.links.tabs ).tab( 'show' );                
+            $( $add ).tab( 'show' );                
+    };
+
+    _insertFilterForm = function( data ) {
+    
+            $filter = $(my.dom.containers.filter );
+            $filter.empty();
+            $filter.append( data );
+            $filter.addClass('active');
+
+            _datePicker();
+            
+            $( my.dom.input.return_uri ).val( window.location.pathname );
+            $( my.dom.input.account ).autocomplete({ source: accounts });
+            $( my.dom.input.task ).autocomplete({ source: tasks });
+            $( $filter ).tab( 'show' );                
     };
     
     _refreshTimesTable = function( data ) {
@@ -162,7 +178,7 @@ var TimeKeeper = ( function( $ ) {
         
         $edit = $(my.dom.links.edit);
         
-        if( $edit.data('bound') == true )
+        if( $edit.data('bound') === true )
         {
                 return;
         }
@@ -191,7 +207,7 @@ var TimeKeeper = ( function( $ ) {
         
         $add = $(my.dom.links.add);
         
-        if( $add.data('bound') == true )
+        if( $add.data('bound') === true )
         {        
             return;            
         }
@@ -216,12 +232,49 @@ var TimeKeeper = ( function( $ ) {
         });
         
     };
+
+    my.onFilterEvent = function() {
+    
+        $filter = $(my.dom.links.filter);
+
+        if( $filter.data('bound') === true )
+        {
+            return;
+        }
+
+        $filter.click( function( e ) {
+
+
+            $url = window.location.pathname.replace('/list', '/filter');
+            if( $url === '' || $url === '/' )
+            {
+                $url = '/filter';
+            }
+
+            $.get( $url, function( data ) {
+            
+                _insertFilterForm( data );
+                _setDefaults();
+                my.onAccountChange();
+                $(my.dom.input.accounts).change();
+                
+                my.onAllTimeChange();
+                $( my.dom.input.alltime );
+        
+                if( !my.oldEnd ) {
+                    my.oldEnd = '08:30:00';
+                }
+
+            } );
+
+        })
+    }
     
     my.onDeleteEvent = function() {
         
         $delete = $( my.dom.links.delete );
         
-        if( $delete.data('bind') == 'bound' )
+        if( $delete.data('bind') === 'bound' )
         {
             return;
         }
@@ -301,7 +354,7 @@ var TimeKeeper = ( function( $ ) {
         
         var enableTime = function() {
             
-            if( ( !paths[2] && !paths[3] ) || (paths[2] == 'any' && paths[3] == 'any') )
+            if( ( !paths[2] && !paths[3] ) || (paths[2] === 'any' && paths[3] === 'any') )
             {               
                 paths[2] = paths[3] = new Date().format('yyyy-mm-dd');
             }   
@@ -311,7 +364,7 @@ var TimeKeeper = ( function( $ ) {
             
         }
         
-        if( paths[2] == 'any' && paths[3] == 'any' )
+        if( paths[2] === 'any' && paths[3] === 'any' )
         {
             $alltime[0].checked = true;
             disableTime();
@@ -342,10 +395,11 @@ var TimeKeeper = ( function( $ ) {
             _datePicker();     
             _updateOrderLinks();            
             my.onEditEvent();
+            my.onFilterEvent();
             my.onAddEvent();
             my.onDeleteEvent();            
-            my.onAccountChange();
-            my.onAllTimeChange();
+
+            $(dom.links.filter).click();
         });
         
         $(document).ajaxComplete( function() {
@@ -353,7 +407,7 @@ var TimeKeeper = ( function( $ ) {
            _updateOrderLinks();
            my.onEditEvent();
            my.onDeleteEvent();
-                           
+
             if( my.oldEnd )
             {
                 $start = $(my.dom.forms.edit + ' ' + my.dom.input.start);
