@@ -1,3 +1,11 @@
+<?php
+/**
+ * Body Element
+ *    
+ * @copright 2014 Joseph Hallenbeck
+ */
+?>
+
 <body>
 
     <div class="container-fluid"> 

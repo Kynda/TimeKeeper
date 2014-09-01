@@ -1,3 +1,11 @@
+<?php 
+/**
+ * Tab Containers
+ *
+ * @copyright 2014 Joseph Hallenbeck
+ *
+ */
+?>
 <div class="col-xs-7">
 
     <div class="tabbable">

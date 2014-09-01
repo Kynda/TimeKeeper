@@ -1,11 +1,19 @@
+/*
+ * TimeKeeper JS Application
+ *
+ * @copyright 2014 Joseph Hallenbeck
+ */
+
+// Define TimeKeeper Module
 var TimeKeeper = ( function( $ ) {
     
+    // Define all DOM paths the application will interact with.
     var my = {
         'dom': {
             'forms': {
                 'edit': null
             },
-            'input': {
+            'input': {               // Input Elements
                 'datepicker': null,
                 'date': null,
                 'account': null,
@@ -20,13 +28,13 @@ var TimeKeeper = ( function( $ ) {
                 'hours': null,
                 'alltime': null
             },
-            'containers': {
+            'containers': {          // Content Wrappers
                 'times': null,
                 'totals': null,
                 'add': null,
                 'filter': null
             },
-            'links': {
+            'links': {               // Actionable Links
                 'add': null,
                 'filter': null,
                 'delete': null,
@@ -40,7 +48,9 @@ var TimeKeeper = ( function( $ ) {
             }
         }
     };
-    
+   
+
+    // Activate datepicker for inputs defined in config.
     _datePicker = function() {
         $( my.dom.input.datepicker ).datepicker({ 
             'dateFormat': 'yy-mm-dd',
@@ -49,6 +59,7 @@ var TimeKeeper = ( function( $ ) {
         } );
     };  
     
+    // Calculate hours from start to end and update hours input.
     _hourCalculator = function() {
         
         var $start = $(my.dom.forms.edit + ' ' + my.dom.input.start);
@@ -69,6 +80,7 @@ var TimeKeeper = ( function( $ ) {
         $start.addClass('bound');        
     };
     
+    // Set default values in form.
     _setDefaults = function() {
         
         paths = window.location.pathname.split('/');
@@ -82,6 +94,7 @@ var TimeKeeper = ( function( $ ) {
         
     };
     
+    // Update the order-by links to alternate between asc and desc
     _updateOrderLinks = function() {
         
         paths = window.location.pathname.split('/');
@@ -99,6 +112,7 @@ var TimeKeeper = ( function( $ ) {
         
     };    
     
+    // Insert edit form recieved via Ajax into the dom.
     _insertEditForm = function( data ) {
         
             $add = $(my.dom.containers.add );
@@ -116,6 +130,7 @@ var TimeKeeper = ( function( $ ) {
             $( my.dom.links.add ).tab( 'show' );                
     };
 
+    // Insert filter form recieved via Ajax int the dom.
     _insertFilterForm = function( data ) {
     
             $filter = $(my.dom.containers.filter );
@@ -131,6 +146,7 @@ var TimeKeeper = ( function( $ ) {
             $( $filter ).tab( 'show' );                
     };
     
+    // ???
     _refreshTimesTable = function( data ) {
         
         $times = $(my.dom.containers.times);
@@ -143,6 +159,7 @@ var TimeKeeper = ( function( $ ) {
         
     };
     
+    // Register event for edit form submission button.
     my.onEditSubmit = function() {
         
         $editForm = $(my.dom.forms.edit );
@@ -174,6 +191,7 @@ var TimeKeeper = ( function( $ ) {
         
     };
     
+    // Register event for the edit button 
     my.onEditEvent = function() {
         
         $edit = $(my.dom.links.edit);
@@ -203,6 +221,7 @@ var TimeKeeper = ( function( $ ) {
         
     };
     
+    // Register event for selecting the add event tab.
     my.onAddEvent = function() {
         
         $add = $(my.dom.links.add);
@@ -233,6 +252,7 @@ var TimeKeeper = ( function( $ ) {
         
     };
 
+    // Register event for selecting the filter tab.
     my.onFilterEvent = function() {
     
         $filter = $(my.dom.links.filter);
@@ -270,6 +290,7 @@ var TimeKeeper = ( function( $ ) {
         })
     }
     
+    // Register event for the delete button.
     my.onDeleteEvent = function() {
         
         $delete = $( my.dom.links.delete );
@@ -321,6 +342,7 @@ var TimeKeeper = ( function( $ ) {
         
     };    
     
+    // Register event for updating the tasks list based on account selection.
     my.onAccountChange = function() {
         
         $accounts = $(my.dom.input.accounts);
@@ -340,6 +362,7 @@ var TimeKeeper = ( function( $ ) {
         });                        
     };
     
+    // Register event for selecting the all-time checkbox.
     my.onAllTimeChange = function() {
         
         paths = window.location.pathname.split('/');
@@ -385,6 +408,7 @@ var TimeKeeper = ( function( $ ) {
         
     };
     
+    // Start the TimeKeeper JS Application
     my.start = function( dom ) {
         
         if( typeof dom === 'object' )
@@ -392,6 +416,7 @@ var TimeKeeper = ( function( $ ) {
             my.dom = dom;
         }
         
+        // Start the initial state of the document.
         $(document).ready( function() {
             _datePicker();     
             _updateOrderLinks();            
@@ -403,6 +428,7 @@ var TimeKeeper = ( function( $ ) {
             $(dom.links.filter).click();
         });
         
+        // Update bindings after ajax completion.
         $(document).ajaxComplete( function() {
            _datePicker();
            _updateOrderLinks();
