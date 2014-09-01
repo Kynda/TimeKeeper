@@ -7,7 +7,7 @@
     </div>
 
     <div class="alert alert-danger fade in" role="alert" id="del-alert">
-        <button type="button" class="close" id="del_cancel">
+        <button type="button" class="close" id="close">
                 <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
         </button>
 

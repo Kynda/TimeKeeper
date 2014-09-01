@@ -113,7 +113,7 @@ var TimeKeeper = ( function( $ ) {
             $( my.dom.input.return_uri ).val( window.location.pathname );
             $( my.dom.input.account ).autocomplete({ source: accounts });
             $( my.dom.input.task ).autocomplete({ source: tasks });
-            $( $add ).tab( 'show' );                
+            $( my.dom.links.add ).tab( 'show' );                
     };
 
     _insertFilterForm = function( data ) {
@@ -288,6 +288,7 @@ var TimeKeeper = ( function( $ ) {
             var that = this;
             
             $(my.dom.links.cancel_delete).click( function() {
+                $( my.dom.links.confirm_delete ).unbind('click');
                 $( my.dom.alerts.delete ).hide();
             })
             

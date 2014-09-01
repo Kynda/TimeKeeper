@@ -34,7 +34,7 @@ dom.links.add = 'a#add-link';
 dom.links.filter = 'a#filter-link';
 dom.links.edit = 'a.edit';
 dom.links.delete = 'a.delete';
-dom.links.cancel_delete = '#close_delete';
+dom.links.cancel_delete = '#close';
 dom.links.confirm_delete = '#delete_btn';
 dom.links.thead = 'th a';
 
