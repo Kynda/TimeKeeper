@@ -5,7 +5,7 @@
 */
 
 // Add all our timeConfig selectors to TimeKeeper.
-timeConfig = {};
+var timeConfig = {};
 
 // Forms
 timeConfig.forms = {};
@@ -25,7 +25,7 @@ timeConfig.input.start = '[name=start]';
 timeConfig.input.account = '#account';
 timeConfig.input.accounts = '#accounts';
 timeConfig.input.hours = '[name=hours]';
-timeConfig.input.alltime = '[name=alltime]'
+timeConfig.input.alltime = '[name=alltime]';
 
 // Containers
 timeConfig.containers = {};
@@ -50,4 +50,4 @@ timeConfig.alerts.save = '#save-alert';
 timeConfig.alerts.delete = '#del-alert';
 
 // Start TimeKeeper App
-TimeKeeper.start( timeConfig );
+TimeKeeper.start(timeConfig);

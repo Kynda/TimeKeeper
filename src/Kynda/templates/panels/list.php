@@ -1,3 +1,10 @@
+<?php
+/**
+ * Display Help Panel on Left
+ *    
+ * @copright 2014 Joseph Hallenbeck
+ */
+?>
 <div class="col-xs-5">
     
     <h1>Hello, <?= $name ?></h1>

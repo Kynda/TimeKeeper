@@ -1,3 +1,10 @@
+<?php
+/**
+ * Filter Time Form
+ *    
+ * @copright 2014 Joseph Hallenbeck
+ */
+?>
 <form method="post" name="filter" role="form" action="/filter" id="filter-form"> 
 
     <div class="row">

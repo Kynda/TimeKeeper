@@ -1,3 +1,10 @@
+<?php
+/**
+ * Displays a table of Time items
+ *    
+ * @copright 2014 Joseph Hallenbeck
+ */
+?>
 <div class="row">
 
     <div class="col-xs-12">

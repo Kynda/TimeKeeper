@@ -1,3 +1,10 @@
+<?php
+/**
+ * HTML Head Element
+ *    
+ * @copright 2014 Joseph Hallenbeck
+ */
+?>
 <!doctype html>
 <html lang="en">
 

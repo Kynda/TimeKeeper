@@ -1,3 +1,10 @@
+<?php
+/**
+ * Edit Time Form
+ *    
+ * @copright 2014 Joseph Hallenbeck
+ */
+?>
 <form method="post" name="filter" role="form" action="/save" id="edit-form">
 
     <div class="row">

@@ -1,6 +1,9 @@
 #TimeKeeper
 ----------------------------------------
-Time is a very simple time-keeping application for tracking billable hours, accounts, and tasks. For simplicity, Time expects to run off a development station behind a firewall as it does not do authentication checks. A 5 minute demo of TimeKeeper can be found at timekeeper.kynda.net
+Time is a very simple time-keeping application for tracking billable hours, 
+accounts, and tasks. For simplicity, Time expects to run off a development 
+station behind a firewall as it does not do authentication checks. 
+A 5 minute demo of TimeKeeper can be found at timekeeper.kynda.net
 
 ###Features
 - Track time by account, task, and billable
