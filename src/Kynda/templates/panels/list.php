@@ -5,7 +5,7 @@
  * @copright 2014 Joseph Hallenbeck
  */
 ?>
-<div class="col-xs-5">
+<div class="hidden-xs col-sm-12 col-md-5">
     
     <h1>Hello, <?= $name ?></h1>
     

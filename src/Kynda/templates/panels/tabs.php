@@ -6,7 +6,7 @@
  *
  */
 ?>
-<div class="col-xs-7">
+<div class="col-xs-12 col-md-7">
 
     <div class="tabbable">
         <ul class="nav nav-justified nav-tabs" role="tablist">
