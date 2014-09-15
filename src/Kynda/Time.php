@@ -431,9 +431,9 @@ class Time {
             'account'   => $request->get('account'),
             'task'      => $request->get('task'),
             'notes'     => $request->get('notes'),
-            'billable'  => $request->get('billable'),
+            'billable'  => $request->get('billable') ?: 0,
             'id'        => $request->get('id')            
-        );
+        );        
         
         $this->db->executeQuery( $sql, $params );        
     }

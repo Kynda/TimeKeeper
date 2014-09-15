@@ -55,14 +55,12 @@ $app->register( new Kynda\Provider\TimeServiceProvider() );
  * 
  *******************************************************************/
 
-$app->post('/filter', function( Request $request ) use ( $app ) {   
-    
+$app->post('/filter', function( Request $request ) use ( $app ) {       
     $uri = $app['time']->getFilterURI( $request );
     return $app->redirect( '/list/' . $uri );
 });
 
-$app->post('/save', function( Request $request ) use ( $app ) {
-    
+$app->post('/save', function( Request $request ) use ( $app ) {    
     $app['time']->add( $request );
     return $app->redirect( $request->get('return_uri') );
 });
