@@ -128,8 +128,8 @@ class Time {
                             break;
 
                         case 'where':
-                            $query .= ' WHERE ' . $arg;
-                            $subquery .= ' AND ' . $arg;
+                            $query .= ' WHERE users_id=3 AND ' . $arg;
+                            $subquery .= ' AND  users_id=3 AND ' . $arg;
                             break;
 
                         case 'groupby':
@@ -213,7 +213,7 @@ class Time {
      */    
     public function getAccounts()
     {
-        $sql = 'SELECT DISTINCT `account` FROM time ORDER BY `account`';
+        $sql = 'SELECT DISTINCT `account` FROM time WHERE users_id=3 ORDER BY `account`';
         return $this->db->fetchAll( $sql );
     }
 
@@ -224,7 +224,7 @@ class Time {
      */
     public function getTasks()
     {
-        $sql = 'SELECT DISTINCT `task` FROM time ORDER BY `task`';
+        $sql = 'SELECT DISTINCT `task` FROM time WHERE users_id=3 ORDER BY `task`';
          return $this->db->fetchAll( $sql ) ;
     }
 
@@ -245,6 +245,7 @@ class Time {
         $sql = 'SELECT DISTINCT `task` 
                 FROM time WHERE `account` 
                     IN (' . $this->cleanIns( implode(',', $accounts ) ) . ') 
+                WHERE users_id=3    
                 ORDER BY `task`'; 
 
         return $this->db->fetchAll( $sql );
