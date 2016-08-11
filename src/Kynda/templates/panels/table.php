@@ -36,7 +36,7 @@
                 <td class="solid"><?= $item['hours'] ?></td>
                 <td class="solid"><?= $item['account'] ?></td>
                 <td class="solid"><?= $item['task'] ?></td>
-                <td><?= $item['notes'] ?></td>
+                <td><?= markdown($item['notes']) ?></td>
                 <td class="solid"><?= $item['billable'] ?></td>
                 <td class="solid"><a class="edit" href="/edit/<?= $item['id'] ?>">Edit</a></td>
                 <td class="solid"><a class="delete" href="/delete/<?= $item['id'] ?>">Remove</a></td>

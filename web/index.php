@@ -10,12 +10,18 @@
 require_once __DIR__.'/../vendor/autoload.php';
 require_once __DIR__.'/../config.php';
 
+use Michelf\Markdown;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 $app = new Silex\Application();
+
+function markdown($string)
+{
+    return Markdown::defaultTransform($string);
+}
 
 /*******************************************************************
  * 
