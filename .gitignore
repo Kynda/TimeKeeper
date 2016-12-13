@@ -2,6 +2,7 @@
 .idea
 .DS_Store
 .svn
+.htpasswd
 *.swp
 *.psd
 ehthumbs.db
@@ -12,6 +13,7 @@ vendor
 config.php
 build
 web/vendors
+web/.htaccess
 composer.lock
 
 # Application Ignores
