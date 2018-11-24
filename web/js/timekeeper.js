@@ -55,7 +55,8 @@ var TimeKeeper = (function($) {
         $(my.dom.input.datepicker).datepicker({
             'dateFormat': 'yy-mm-dd',
             'numberOfMonths': 3,
-            'showButtonPanel': true
+            'showButtonPanel': true,
+            'firstDay': 1
         } );
     };
 
