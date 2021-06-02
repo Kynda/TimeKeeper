@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+    time:
+        build: .
+        hostname: time.docker
+        working_dir: /var/www/html
+        environment:
+            DOCKER: ${DOCKER}
+            DB_DATABASE: ${DB_DATABASE}
+            ENVIRONMENT: ${ENVIRONMENT}
+            XDEBUG_REMOTE_HOST: ${XDEBUG_REMOTE_HOST}
+            XDEBUG_REMOTE_PORT: ${XDEBUG_REMOTE_PORT}
+        ports:
+            - 8081:80
+        volumes:
+            - .:/var/www/html
+            - .vhost:/etc/apache2/sites-enabled/000-default.conf
+            - .data.db:/var/data.db

@@ -1,0 +1,44 @@
+<VirtualHost *:80>
+        ServerName localhost
+        DocumentRoot /var/www/html/web
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        php_value error_reporting -1
+        php_value display_errors on
+        php_flag display_startup_errors on
+        php_flag log_errors on
+
+        php_value date.timezone US/Mountain
+        php_value always_populate_raw_post_data -1
+
+        php_flag xdebug.remote_enable on
+        php_flag xdebug.remote_autostart on
+        php_flag xdebug.force_display_errors on
+        php_flag xdebug.force_error_reporting on
+        php_flag xdebug.scream off
+        php_flag xdebug.cli_color on
+        php_flag xdebug.show_error_trace on
+        php_flag xdebug.show_exception_trace on
+        php_flag xdebug.show_local_vars on
+        php_value xdebug.collect_params 3
+        php_value xdebug.remote_port ${XDEBUG_REMOTE_PORT}
+        php_value xdebug.remote_host ${XDEBUG_REMOTE_HOST}
+        php_value xdebug.remote_log /var/log/xdebug.log
+
+        SetEnv DB_DATABASE ${DB_DATABASE}
+
+        SetEnv ENVIRONMENT ${ENVIRONMENT}
+        SetEnv DOCKER ${DOCKER}
+        SetEnv LANGUAGE en
+
+        <IfModule rewrite_module>
+            Options -MultiViews +Indexes +FollowSymLinks
+
+            RewriteEngine On
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteRule ^.*$ /index.php [L]
+        </IfModule>
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet

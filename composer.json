@@ -22,6 +22,6 @@
         "michelf/php-markdown": "~1.5"
     },
     "autoload": {
-	"psr-0": {"Kynda": "src/"}                
+	    "psr-0": {"Kynda": "src/"}
     }
 }

@@ -1,14 +1,14 @@
 <?php
 /**
  * Body Element
- *    
+ *
  * @copright 2014 Joseph Hallenbeck
  */
 ?>
 
 <body>
 
-    <div class="container-fluid"> 
+    <div class="container-fluid">
 
         <?= $panel ?>
 
@@ -24,12 +24,12 @@
             <a class="btn btn-danger" id="delete_btn" href="#">Delete</a>
         </p>
     </div>
-    
+
     <div class="alert alert-success fade in" role="alert" id="save-alert">
         <p>
             Saving Time...
         </p>
-    </div>    
+    </div>
 
 
     <?php foreach( $this->postJavascript as $javascript ): ?>

@@ -1,58 +1,88 @@
-#TimeKeeper
-----------------------------------------
-Time is a very simple time-keeping application for tracking billable hours, 
-accounts, and tasks. For simplicity, Time expects to run off a development 
-station behind a firewall as it does not do authentication checks. 
-A 5 minute demo of TimeKeeper can be found at 
-[timekeeper.kynda.net](http://timekeeper.kynda.net)
+TimeKeeper
+===============================================================================
 
-###Features
+**The Development Branch is broken until further notice.**
+
+TimeKeeper is a very simple time-keeping application for tracking billable
+hours, accounts, and tasks.
+
+Features
+-------------------------------------------------------------------------------
+
 - Track time by account, task, and billable
-- Filter tracked time by account, task, and billable to see total hours per account, task, or timeframe.
+- Filter tracked time by account, task, and billable to see total hours per
+  account, task, or timeframe.
 
-###Requirements
-- Apache
-- PHP 5.3 or Greater
-- MySQL
-- Localhost Environment or htaccess authentication
+Installation
+-------------------------------------------------------------------------------
+
+### Docker
+
+1. Clone this repo to a local system
+2. Run `docker compose up`
+3. TimeKeeper should now be runnong on http://localhost:8081
+
+### Sans Docker
+
+Note, TimeKeeper expects to run locally and does not support user authentication
+at this time.
+
+Requirements
+
+- Apache or NGINX
+- PHP 8.0 or Greater
+- SQLITE
 - Composer
 - Bower
 
-###Installation
-- Note: This is not for public facing use.
-- Import the MySQL dump (`database_installer.sql`) into your MySQL database of
-  choice.
-- Rename `config.example.php` to `config.php` and fill in your database name,
-  user name, and password
-- Run `composer install`
-- Run `bower install`
-- Should be done!
+1. Clone this repo to a local system
+2. Run `composer install`
+3. Run `bower install`
+4. Configure your web server to serve `web/index.php`
 
-###Time is built using
-- The Silex MicroFramework
+The file `.vhost` has an example Apache configuration that can be used for (4).
+An environment variable for `DB\_DATABASE` should be set and pointed at
+`.data.db`.
+
+Time is built using
+-------------------------------------------------------------------------------
+
+- The Slim Framework
+- SQLITE
 - Bootstrap
 - Composer
 - Bower
 - DBAL
 - jQuery
 
-##ChangeLog
-----------------------------------------
+ChangeLog
+-------------------------------------------------------------------------------
 
-###Version 0.1.0
-####September 14, 2014
+### Version 0.2.0
+### 2021-06-02
+
+- Added docker support
+- Converted database from MySQL to SQLITE
+- Switched back-end framework to Slim with PHP 8.0 support
+- License changed to GPLv3
+
+### Version 0.1.0
+#### 2014-09-14
+
 - Converted all views to bootstrap3
 - Front-end libraries now load through bower making installation easier
 - Config.php now defines the database parameters
 
-###Version 0.0.0
-####April 3, 2013
+### Version 0.0.0
+#### 2013-04-03
+
 - Base features implemented.
 - Single user per install.
 - Allows adding and editing of time, creation of accounts and tasks.
 - Allows filtering of time by time, billable, accounts, tasks.
 - Lists time by filters, allows reordering, totals hours billable/non-billable.
 
-###Version 0.0.0
-####March 27, 2013
+### Version 0.0.0
+#### 2013-03-27
+
 - Initial Commit
