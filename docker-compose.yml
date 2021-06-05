@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-    time:
+    time-api:
         build: .
-        hostname: time.docker
+        hostname: api.time.docker
         working_dir: /var/www/html
         environment:
             DOCKER: ${DOCKER}
@@ -14,6 +14,6 @@ services:
         ports:
             - 8081:80
         volumes:
-            - .:/var/www/html
-            - .vhost:/etc/apache2/sites-enabled/000-default.conf
+            - ./api:/var/www/html
             - .data.db:/var/data.db
+            - .vhost:/etc/apache2/sites-enabled/000-default.conf
