@@ -1,19 +1,4 @@
-# Global Ignores
-.idea
-.DS_Store
-.svn
+*.bak
 .htpasswd
-*.swp
-*.psd
-ehthumbs.db
-Thumbs.db
-nbproject
-.git.bak
-vendor
-config.php
-build
-web/vendors
-web/.htaccess
-composer.lock
 
-# Application Ignores
+.DS_Store
