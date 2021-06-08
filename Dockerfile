@@ -14,4 +14,5 @@ RUN apt update && apt install -y --no-install-recommends \
 
 RUN pecl install xdebug && \
     docker-php-ext-enable xdebug && \
-    touch /var/log/xdebug.log && chmod 666 /var/log/xdebug.log
+    touch /var/log/xdebug.log && chmod 666 /var/log/xdebug.log && \
+    a2enmod rewrite

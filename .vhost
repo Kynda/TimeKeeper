@@ -1,35 +1,35 @@
 <VirtualHost *:80>
-        ServerName time-api.docker
-        DocumentRoot /var/www/html/public
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
+    ServerName time-api.docker
+    DocumentRoot /var/www/html/public
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-        php_value error_reporting -1
-        php_value display_errors on
-        php_flag display_startup_errors on
-        php_flag log_errors on
+    php_value error_reporting -1
+    php_value display_errors on
+    php_flag display_startup_errors on
+    php_flag log_errors on
 
-        php_value date.timezone US/Mountain
-        php_value always_populate_raw_post_data -1
+    php_value date.timezone US/Mountain
+    php_value always_populate_raw_post_data -1
 
-        php_flag xdebug.mode debug
-        php_flag xdebug.start_with_request on
-        php_flag xdebug.force_display_errors on
-        php_flag xdebug.force_error_reporting on
-        php_flag xdebug.scream off
-        php_flag xdebug.cli_color on
-        php_flag xdebug.show_error_trace on
-        php_flag xdebug.show_exception_trace on
-        php_flag xdebug.show_local_vars on
-        php_value xdebug.client_port ${XDEBUG_REMOTE_PORT}
-        php_value xdebug.client_host ${XDEBUG_REMOTE_HOST}
-        php_value xdebug.log /var/log/xdebug.log
+    php_flag xdebug.mode debug
+    php_flag xdebug.start_with_request on
+    php_flag xdebug.force_display_errors on
+    php_flag xdebug.force_error_reporting on
+    php_flag xdebug.scream off
+    php_flag xdebug.cli_color on
+    php_flag xdebug.show_error_trace on
+    php_flag xdebug.show_exception_trace on
+    php_flag xdebug.show_local_vars on
+    php_value xdebug.client_port ${XDEBUG_REMOTE_PORT}
+    php_value xdebug.client_host ${XDEBUG_REMOTE_HOST}
+    php_value xdebug.log /var/log/xdebug.log
 
-        SetEnv DB_DATABASE ${DB_DATABASE}
+    SetEnv DB_DATABASE ${DB_DATABASE}
 
-        SetEnv ENVIRONMENT ${ENVIRONMENT}
-        SetEnv DOCKER ${DOCKER}
-        SetEnv LANGUAGE en
+    SetEnv ENVIRONMENT ${ENVIRONMENT}
+    SetEnv DOCKER ${DOCKER}
+    SetEnv LANGUAGE en
 </VirtualHost>
 
 # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
