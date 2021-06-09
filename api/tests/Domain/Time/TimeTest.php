@@ -17,6 +17,7 @@ class TimeTest extends TestCase
         HOURS    = 1.00,
         ACCOUNT  = 'Dayjob',
         TASK     = 'Ticket',
+        NOTES    = 'YOLO',
         BILLABLE = true
     ;
 
@@ -30,17 +31,19 @@ class TimeTest extends TestCase
             self::HOURS,
             self::ACCOUNT,
             self::TASK,
+            self::NOTES,
             self::BILLABLE
         );
 
-        $expected = jsone_encode([
+        $expected = json_encode([
             'id'       => self::ID,
             'date'     => self::DATE,
-            'start'    => self::START,
             'end'      => self::END,
+            'start'    => self::START,
             'hours'    => self::HOURS,
             'account'  => self::ACCOUNT,
             'task'     => self::TASK,
+            'notes'    => self::NOTES,
             'billable' => self::BILLABLE
         ]);
 

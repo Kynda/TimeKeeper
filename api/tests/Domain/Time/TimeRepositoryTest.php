@@ -23,6 +23,7 @@ class TimeRepositoryTest extends TestCase
         HOURS    = 1.00,
         ACCOUNT  = 'Dayjob',
         TASK     = 'Ticket',
+        NOTES    = 'YOLO',
         BILLABLE = true
     ;
 
@@ -41,15 +42,16 @@ class TimeRepositoryTest extends TestCase
             'hours'    => self::HOURS,
             'account'  => self::ACCOUNT,
             'task'     => self::TASK,
+            'notes'    => self::NOTES,
             'billable' => self::BILLABLE
         ];
 
         $this->pdoProphecy          = $this->prophesize(PDO::class);
         $this->pdoStatementProphecy = $this->prophesize(PDOStatement::class);
-        $this->timeRepository       = new TimeRepository($this->pdo);
+        $this->timeRepository       = new TimeRepository($this->pdoProphecy->reveal());
     }
 
-    public function testTime(): void
+    public function testTimeOfId(): void
     {
         $this->pdoStatementProphecy
             ->execute()
@@ -58,7 +60,7 @@ class TimeRepositoryTest extends TestCase
 
         $this->pdoProphecy
             ->prepare()
-            ->willReturn($this->pdoStatementProphecy)
+            ->willReturn($this->pdoStatementProphecy->reveal())
             ->shouldBeCalledOnce();
 
         $expected = new Time(
@@ -69,9 +71,10 @@ class TimeRepositoryTest extends TestCase
             self::HOURS,
             self::ACCOUNT,
             self::TASK,
+            self::NOTES,
             self::BILLABLE
         );
 
-        $this->assertEquals($expected, $this->timeRepository->time(self::ID));
+        $this->assertEquals($expected, $this->timeRepository->timeOfId(self::ID));
     }
 }

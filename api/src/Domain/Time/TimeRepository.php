@@ -36,7 +36,7 @@ class TimeRepository
      * @param int $id
      * @return Time|null
      */
-    public function time(int $id): ?Time
+    public function timeOfId(int $id): ?Time
     {
         $timeSelect = $this->timeSelect ??
             $this->pdo->prepare(self::SELECT_TIME);

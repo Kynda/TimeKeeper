@@ -6,7 +6,7 @@ namespace App\Domain\Time;
 
 use JsonSerializable;
 
-class User implements JsonSerializable
+class Time implements JsonSerializable
 {
     /**
      * @var int|null
