@@ -7,7 +7,7 @@ services:
         working_dir: /var/www/html
         environment:
             DOCKER: ${DOCKER}
-            DB_DATABASE: ${DB_DATABASE}
+            DATABASE: ${DATABASE}
             ENVIRONMENT: ${ENVIRONMENT}
             XDEBUG_REMOTE_HOST: ${XDEBUG_REMOTE_HOST}
             XDEBUG_REMOTE_PORT: ${XDEBUG_REMOTE_PORT}

@@ -6,6 +6,7 @@ namespace Tests\Domain\Time;
 
 use PDO;
 use PDOStatement;
+use App\Domain\DomainException\DomainStatementException;
 use App\Domain\Time\Time;
 use App\Domain\Time\TimeRepository;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -53,14 +54,19 @@ class TimeRepositoryTest extends TestCase
 
     public function testTimeOfId(): void
     {
-        $this->pdoStatementProphecy
-            ->execute()
-            ->willReturn($this->raw)
+        $this->pdoProphecy
+            ->prepare(TimeRepository::SELECT_TIME)
+            ->willReturn($this->pdoStatementProphecy->reveal())
             ->shouldBeCalledOnce();
 
-        $this->pdoProphecy
-            ->prepare()
-            ->willReturn($this->pdoStatementProphecy->reveal())
+        $this->pdoStatementProphecy
+            ->execute(['id' => self::ID])
+            ->willReturn(true)
+            ->shouldBeCalledOnce();
+
+        $this->pdoStatementProphecy
+            ->fetch(PDO::FETCH_ASSOC)
+            ->willReturn($this->raw)
             ->shouldBeCalledOnce();
 
         $expected = new Time(
@@ -75,6 +81,9 @@ class TimeRepositoryTest extends TestCase
             self::BILLABLE
         );
 
-        $this->assertEquals($expected, $this->timeRepository->timeOfId(self::ID));
+        $this->assertEquals(
+            $expected,
+            $this->timeRepository->timeOfId(self::ID)
+        );
     }
 }

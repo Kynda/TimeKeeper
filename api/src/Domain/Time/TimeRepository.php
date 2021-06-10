@@ -9,17 +9,12 @@ use PDO;
 class TimeRepository
 {
     const
-        SELECT_TIME = "SELECT * FROM Time WHERE id = :id";
+        SELECT_TIME = "SELECT * FROM time WHERE id = :id";
 
     /**
      * @var PDO
      */
     private $pdo;
-
-    /**
-     * @var PDOStatement|null
-     */
-    private $timeSelect;
 
     /**
      * __construct
@@ -33,29 +28,62 @@ class TimeRepository
     }
 
     /**
+     * @param Time $time
+     */
+    public function deleteTime(Time $time): void
+    {
+
+    }
+
+    /**
      * @param int $id
      * @return Time|null
      */
     public function timeOfId(int $id): ?Time
     {
-        $timeSelect = $this->timeSelect ??
-            $this->pdo->prepare(self::SELECT_TIME);
-
-        $this->timeSelect = $timeSelect;
-
-        $timeSelect->execute(['id' => $id]);
-        $raw = $timeSelect->fetch(PDO::FETCH_ASSOC);
-
+        $statement = $this->pdo->prepare(self::SELECT_TIME);
+        $statement->execute(['id' => $id]);
+        $raw = $statement->fetch();
         return $raw ? new Time(
-            $raw['id'],
+            (int)$raw['id'],
             $raw['date'],
             $raw['start'],
             $raw['end'],
-            $raw['hours'],
+            (float)$raw['hours'],
             $raw['account'],
             $raw['task'],
             $raw['notes'],
-            $raw['billable']
+            (bool)$raw['billable']
         ) : null;
-   }
+    }
+
+    /**
+     * @param Time $time
+     * @return Time
+     */
+    public function saveTime(Time $time): Time
+    {
+        $timeSave = $this->timeUpdate ??
+            $this->pdo->prepare(self::SAVE_TIME);
+
+        $this->timeSave = $timeSave;
+
+        $timeSave->execute($time->jsonSerialize());
+    }
+
+    /**
+     * @param Time $time
+     * @return Time
+     */
+    public function updateTime(Time $time): Time
+    {
+        $timeUpdate = $this->timeUpdate ??
+            $this->pdo->prepare(self::UPDATE_TIME);
+
+        $this->timeUpdate = $timeUpdate;
+
+        $timeUpdate->execute($time->jsonSerialize());
+
+        return $time;
+    }
 }
