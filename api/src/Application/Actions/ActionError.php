@@ -7,15 +7,15 @@ use JsonSerializable;
 
 class ActionError implements JsonSerializable
 {
-    public const BAD_REQUEST = 'BAD_REQUEST';
-    public const INSUFFICIENT_PRIVILEGES = 'INSUFFICIENT_PRIVILEGES';
-    public const NOT_ALLOWED = 'NOT_ALLOWED';
-    public const NOT_IMPLEMENTED = 'NOT_IMPLEMENTED';
-    public const RESOURCE_NOT_FOUND = 'RESOURCE_NOT_FOUND';
-    public const SERVER_ERROR = 'SERVER_ERROR';
-    public const UNAUTHENTICATED = 'UNAUTHENTICATED';
-    public const VALIDATION_ERROR = 'VALIDATION_ERROR';
-    public const VERIFICATION_ERROR = 'VERIFICATION_ERROR';
+    public const BAD_REQUEST             = 'Bad Request';
+    public const INSUFFICIENT_PRIVILEGES = 'Insufficient Privileges';
+    public const NOT_ALLOWED             = 'Not Allowed';
+    public const NOT_IMPLEMENTED         = 'Not Implemented';
+    public const RESOURCE_NOT_FOUND      = 'Resource Not Found';
+    public const SERVER_ERROR            = 'Server Error';
+    public const UNAUTHENTICATED         = 'Unauthenticated';
+    public const VALIDATION_ERROR        = 'Validation Error';
+    public const VERIFICATION_ERROR      = 'Verification Error';
 
     /**
      * @var string
@@ -79,7 +79,7 @@ class ActionError implements JsonSerializable
     public function jsonSerialize()
     {
         $payload = [
-            'type' => $this->type,
+            'type'        => $this->type,
             'description' => $this->description,
         ];
 

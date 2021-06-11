@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace App\Application\Actions;
 
 use App\Domain\DomainException\DomainRecordNotFoundException;
+use League\Fractal\Manager;
+use League\Fractal\Resource\ResourceInterface;
+use League\Fractal\Serializer\JsonApiSerializer;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
@@ -50,9 +53,9 @@ abstract class Action
      */
     public function __invoke(Request $request, Response $response, array $args): Response
     {
-        $this->request = $request;
+        $this->request  = $request;
         $this->response = $response;
-        $this->args = $args;
+        $this->args     = $args;
 
         try {
             return $this->action();
@@ -69,21 +72,6 @@ abstract class Action
     abstract protected function action(): Response;
 
     /**
-     * @return array|object
-     * @throws HttpBadRequestException
-     */
-    protected function getFormData()
-    {
-        $input = json_decode(file_get_contents('php://input'));
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new HttpBadRequestException($this->request, 'Malformed JSON input.');
-        }
-
-        return $input;
-    }
-
-    /**
      * @param  string $name
      * @return mixed
      * @throws HttpBadRequestException
@@ -98,13 +86,21 @@ abstract class Action
     }
 
     /**
-     * @param array|object|null $data
+     * @param ResourceInterface
      * @param int $statusCode
      * @return Response
      */
-    protected function respondWithData($data = null, int $statusCode = 200): Response
+    protected function respondWithResource(
+        ResourceInterface $resource,
+        int $statusCode = 200
+    ): Response
     {
-        $payload = new ActionPayload($statusCode, $data);
+        $manager = new Manager();
+        $manager->setSerializer(new JsonApiSerializer());
+        $payload = new ActionPayload(
+            $statusCode,
+            $manager->createData($resource)->toArray()
+        );
 
         return $this->respond($payload);
     }
@@ -119,7 +115,6 @@ abstract class Action
         $this->response->getBody()->write($json);
 
         return $this->response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus($payload->getStatusCode());
+            ->withStatus($payload->getStatusCode());
     }
 }
