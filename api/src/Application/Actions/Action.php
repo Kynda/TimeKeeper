@@ -61,6 +61,8 @@ abstract class Action
             return $this->action();
         } catch (DomainRecordNotFoundException $e) {
             throw new HttpNotFoundException($this->request, $e->getMessage());
+        } catch (DomainValidationException $e) {
+            throw new HttpValidationErrorException($this->request, $e->getMessage());
         }
     }
 

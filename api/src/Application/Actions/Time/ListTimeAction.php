@@ -6,7 +6,7 @@ namespace App\Application\Actions\Time;
 
 use Psr\Http\Message\ResponseInterface as Response;
 
-class ViewTimeAction extends TimeAction
+class ListTimeAction extends TimeAction
 {
     /**
      * {@inheritdoc}

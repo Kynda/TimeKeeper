@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Application\Actions\Time;
 
 use App\Application\Actions\Action;
-use App\Domain\Time\TimeRepository;
+use App\Domain\Time\TimeService;
 use Psr\Log\LoggerInterface;
 
 abstract class TimeAction extends Action
@@ -12,7 +12,7 @@ abstract class TimeAction extends Action
     /**
      * @var timeRepository
      */
-    protected $timeRepository;
+    protected $timeService;
 
     /**
      * @param LoggerInterface $logger
@@ -20,9 +20,9 @@ abstract class TimeAction extends Action
      */
     public function __construct(
         LoggerInterface $logger,
-        TimeRepository $timeRepository
+        TimeService $timeService
     ) {
         parent::__construct($logger);
-        $this->timeRepository = $timeRepository;
+        $this->timeService = $timeService;
     }
 }

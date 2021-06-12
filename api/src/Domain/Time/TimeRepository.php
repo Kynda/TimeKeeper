@@ -8,8 +8,48 @@ use PDO;
 
 class TimeRepository
 {
-    const
-        SELECT_TIME = "SELECT * FROM time WHERE id = :id";
+    const DELETE = <<<QUERY
+DELETE FROM time WHERE id = :id
+QUERY;
+
+    const INSERT =  <<<QUERY
+INSERT INTO time (
+    date,
+    start,
+    end,
+    hours,
+    account,
+    task,
+    notes,
+    billable
+)VALUES (
+    :date,
+    :start,
+    :end,
+    :hours,
+    :account,
+    :task,
+    :notes,
+    :billable
+)
+QUERY;
+
+    const SELECT = <<<QUERY
+SELECT * FROM time WHERE id = :id
+QUERY;
+
+    const UPDATE = <<<QUERY
+UPDATE time SET
+    date     = :date,
+    start    = :start,
+    end      = :end,
+    hours    = :hours,
+    account  = :account,
+    task     = :task,
+    notes    = :notes,
+    billable = :billable
+WHERE id = :id
+QUERY;
 
     /**
      * @var PDO
@@ -28,11 +68,34 @@ class TimeRepository
     }
 
     /**
-     * @param Time $time
+     * @param array $args
+     * @return Time
      */
-    public function deleteTime(Time $time): void
+    public function createTime(array $args): Time
     {
+        $statement = $this->pdo->prepare(self::INSERT);
+        $statement->execute($args);
+        return $this->timeOfId((int)$this->pdo->lastInsertId());
+    }
 
+    /**
+     * @param int $id
+     */
+    public function deleteTimeOfId(int $id): void
+    {
+        $statement = $this->pdo->prepare(self::DELETE);
+        $statement->execute(['id' => $id]);
+    }
+
+    /**
+     * @param Time $time
+     * @return Time
+     */
+    public function saveTime(Time $time): Time
+    {
+        $statement = $this->pdo->prepare(self::UPDATE);
+        $statement->execute($time->jsonSerialize());
+        return $this->timeOfId($time->getId());
     }
 
     /**
@@ -41,7 +104,7 @@ class TimeRepository
      */
     public function timeOfId(int $id): ?Time
     {
-        $statement = $this->pdo->prepare(self::SELECT_TIME);
+        $statement = $this->pdo->prepare(self::SELECT);
         $statement->execute(['id' => $id]);
         $raw = $statement->fetch();
         return $raw ? new Time(
@@ -55,35 +118,5 @@ class TimeRepository
             $raw['notes'],
             (bool)$raw['billable']
         ) : null;
-    }
-
-    /**
-     * @param Time $time
-     * @return Time
-     */
-    public function saveTime(Time $time): Time
-    {
-        $timeSave = $this->timeUpdate ??
-            $this->pdo->prepare(self::SAVE_TIME);
-
-        $this->timeSave = $timeSave;
-
-        $timeSave->execute($time->jsonSerialize());
-    }
-
-    /**
-     * @param Time $time
-     * @return Time
-     */
-    public function updateTime(Time $time): Time
-    {
-        $timeUpdate = $this->timeUpdate ??
-            $this->pdo->prepare(self::UPDATE_TIME);
-
-        $this->timeUpdate = $timeUpdate;
-
-        $timeUpdate->execute($time->jsonSerialize());
-
-        return $time;
     }
 }

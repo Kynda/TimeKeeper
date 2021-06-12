@@ -64,6 +64,7 @@ class Time implements JsonSerializable
      * @param string $account
      * @param string $task
      * @param string $notes
+     * @param bool $billable
      */
     public function __construct(
         ?int $id,
@@ -175,5 +176,20 @@ class Time implements JsonSerializable
             'notes'    => $this->getNotes(),
             'billable' => $this->getBillable(),
         ];
+    }
+
+    public function with(array $args)
+    {
+        return new self(
+            $this->getId(),
+            $args['date'] ?? $this->getDate(),
+            $args['start'] ?? $this->getStart(),
+            $args['end'] ?? $this->getEnd(),
+            (int)($args['hours'] ?? $this->getHours()),
+            $args['account'] ?? $this->getAccount(),
+            $args['task'] ?? $this->getTask(),
+            $args['notes'] ?? $this->getNotes(),
+            (bool)($args['billable'] ?? $this->getBillable())
+        );
     }
 }

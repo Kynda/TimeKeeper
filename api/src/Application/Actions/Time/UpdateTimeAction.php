@@ -6,7 +6,7 @@ namespace App\Application\Actions\Time;
 
 use Psr\Http\Message\ResponseInterface as Response;
 
-class ViewTimeAction extends TimeAction
+class UpdateTimeAction extends TimeAction
 {
     /**
      * {@inheritdoc}
@@ -14,8 +14,9 @@ class ViewTimeAction extends TimeAction
     public function action(): Response
     {
         return $this->respondWithResource(
-            $this->timeService->findTimeResourceOfId(
-                (int)$this->resolveArg('id')
+            $this->timeService->updateTimeResourceOfId(
+                (int)$this->resolveArg('id'),
+                $this->request->getParsedBody()
             )
         );
     }
