@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Application\Handlers;
 
 use App\Application\Actions\ActionError;
 use App\Application\Actions\ActionPayload;
+use App\Application\HttpException\HttpValidationErrorException;
 use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Exception\HttpBadRequestException;
@@ -25,45 +27,78 @@ class HttpErrorHandler extends SlimErrorHandler
     protected function respond(): Response
     {
         $exception = $this->exception;
-        $statusCode = 500;
-        $error = new ActionError(
-            ActionError::SERVER_ERROR,
-            'An internal error has occurred while processing your request.'
+        $actionError = new ActionError();
+
+        list($statusCode, $title, $description, $ptr) =
+            $this->unpackException($exception);
+
+        $actionError->addError(
+            $statusCode,
+            $title,
+            $description,
+            $ptr
         );
 
-        if ($exception instanceof HttpException) {
-            $statusCode = $exception->getCode();
-            $error->setDescription($exception->getMessage());
-
-            if ($exception instanceof HttpNotFoundException) {
-                $error->setType(ActionError::RESOURCE_NOT_FOUND);
-            } elseif ($exception instanceof HttpMethodNotAllowedException) {
-                $error->setType(ActionError::NOT_ALLOWED);
-            } elseif ($exception instanceof HttpUnauthorizedException) {
-                $error->setType(ActionError::UNAUTHENTICATED);
-            } elseif ($exception instanceof HttpForbiddenException) {
-                $error->setType(ActionError::INSUFFICIENT_PRIVILEGES);
-            } elseif ($exception instanceof HttpBadRequestException) {
-                $error->setType(ActionError::BAD_REQUEST);
-            } elseif ($exception instanceof HttpNotImplementedException) {
-                $error->setType(ActionError::NOT_IMPLEMENTED);
-            }
+        $previous = $exception->getPrevious();
+        while ($previous) {
+            list($status, $title, $description, $ptr) = $this->unpackException($previous);
+            $actionError->addError(
+                $status,
+                $title,
+                $description,
+                $ptr
+            );
+            $previous = $previous->getPrevious();
         }
 
-        if (
-            !($exception instanceof HttpException)
-            && $exception instanceof Throwable
-            && $this->displayErrorDetails
-        ) {
-            $error->setDescription($exception->getMessage());
-        }
-
-        $payload = new ActionPayload($statusCode, null, $error);
+        $payload = new ActionPayload($statusCode, null, $actionError);
         $encodedPayload = json_encode($payload, JSON_PRETTY_PRINT);
 
         $response = $this->responseFactory->createResponse($statusCode);
         $response->getBody()->write($encodedPayload);
 
         return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    private function unpackException(\Exception $exception): array
+    {
+        switch(true) {
+            case $exception instanceof HttpNotFoundException:
+                $title = ActionError::RESOURCE_NOT_FOUND;
+            break;
+            case $exception instanceof HttpMethodNotAllowedException:
+                $title = ActionError::NOT_ALLOWED;
+            break;
+            case $exception instanceof HttpUnauthorizedException:
+                $title = ActionError::UNAUTHENTICATED;
+            break;
+            case $exception instanceof HttpForbiddenException:
+                $title = ActionError::INSUFFICIENT_PRIVILEGES;
+            break;
+            case $exception instanceof HttpBadRequestException:
+                $title = ActionError::BAD_REQUEST;
+            break;
+            case $exception instanceof HttpNotImplementedException:
+                $title = ActionError::NOT_IMPLEMENTED;
+            break;
+            case $exception instanceof HttpValidationErrorException:
+            case $exception->getCode() === 422:
+                $title = ActionError::VALIDATION_ERROR;
+            break;
+            default:
+                $title = ActionError::SERVER_ERROR;
+            break;
+        }
+
+        $statusCode = $exception->getCode() === 0 ? 500 : $exception->getCode();
+        $description = $exception instanceof HttpException ?
+            $exception->getDescription() : $exception->getMessage();
+
+        $ptr = null;
+        if (method_exists($exception, 'getField') && $exception->getField()) {
+            $ptr = '/data/attributes/' . $exception->getField();
+        }
+
+        return [$statusCode, $title, $description, $ptr];
     }
 }

@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Application\Actions;
 
+use App\Application\HttpException\HttpValidationErrorException;
 use App\Domain\DomainException\DomainRecordNotFoundException;
+use App\Domain\DomainException\DomainValidationException;
 use League\Fractal\Manager;
 use League\Fractal\Resource\ResourceInterface;
 use League\Fractal\Serializer\JsonApiSerializer;
@@ -62,7 +64,7 @@ abstract class Action
         } catch (DomainRecordNotFoundException $e) {
             throw new HttpNotFoundException($this->request, $e->getMessage());
         } catch (DomainValidationException $e) {
-            throw new HttpValidationErrorException($this->request, $e->getMessage());
+            throw new HttpValidationErrorException($this->request, null, $e);
         }
     }
 

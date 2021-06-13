@@ -16,8 +16,8 @@ class TimeTest extends TestCase
         END      = '14:00',
         HOURS    = 1.00,
         ACCOUNT  = 'Dayjob',
-        TASK     = 'Ticket',
-        NOTES    = 'YOLO',
+        TASK     = 'Code Review',
+        NOTES    = 'Code review all the things',
         BILLABLE = true
     ;
 
@@ -48,5 +48,46 @@ class TimeTest extends TestCase
         ]);
 
         $this->assertEquals($expected, json_encode($time));
+    }
+
+    public function testWith()
+    {
+         $time = new Time(
+            self::ID,
+            self::DATE,
+            self::START,
+            self::END,
+            self::HOURS,
+            self::ACCOUNT,
+            self::TASK,
+            self::NOTES,
+            self::BILLABLE
+         );
+
+        $expected = new Time(
+            self::ID,
+            '2021-06-13',
+            '15:00',
+            '17:00',
+            2.00,
+            'Personal',
+            'Exercise',
+            'Hiked Mail Trail 125',
+            false
+        );
+
+        $timeWithNewProperties = $time->with([
+            'date'     => '2021-06-13',
+            'start'    => '15:00',
+            'end'      => '17:00',
+            'hours'    => 2.00,
+            'account'  => 'Personal',
+            'task'     => 'Exercise',
+            'notes'    => 'Hiked Mail Trail 125',
+            'billable' => false
+        ]);
+
+        $this->assertEquals($expected, $timeWithNewProperties);
+        $this->assertNotEquals($time, $timeWithNewProperties);
     }
 }

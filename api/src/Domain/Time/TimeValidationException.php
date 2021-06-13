@@ -7,5 +7,11 @@ use App\Domain\DomainException\DomainValidationException;
 
 class TimeValidationException extends DomainValidationException
 {
-    public $message = 'The time record requested does not exist.';
+    const
+        INVALID_DATE_FORMAT         = "Date format must conform to ISO8601",
+        INVALID_TIME_FORMAT         = "Time format must conform to ISO8601",
+        INVALID_TIME_RANGE          = "End must be after Start",
+        INVALID_HOURS_RANGE         = "Hours must be greater than 0",
+        START_END_HOURS_INCONGRUENT = "The range between Start and End does not match the value of Hours"
+    ;
 }

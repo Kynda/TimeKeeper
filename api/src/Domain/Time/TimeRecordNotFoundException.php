@@ -7,5 +7,4 @@ use App\Domain\DomainException\DomainRecordNotFoundException;
 
 class TimeRecordNotFoundException extends DomainRecordNotFoundException
 {
-    public $message = 'The time record requested does not exist.';
 }

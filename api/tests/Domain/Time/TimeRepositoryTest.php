@@ -52,10 +52,25 @@ class TimeRepositoryTest extends TestCase
         $this->timeRepository       = new TimeRepository($this->pdoProphecy->reveal());
     }
 
+    public function testDeleteTimeOfId(): void
+    {
+        $this->pdoProphecy
+            ->prepare(TimeRepository::DELETE)
+            ->willReturn($this->pdoStatementProphecy->reveal())
+            ->shouldBeCalledOnce();
+
+        $this->pdoStatementProphecy
+            ->execute(['id' => self::ID])
+            ->willReturn(true)
+            ->shouldBeCalledOnce();
+
+        $this->timeRepository->deleteTimeOfId(self::ID);
+    }
+
     public function testTimeOfId(): void
     {
         $this->pdoProphecy
-            ->prepare(TimeRepository::SELECT_TIME)
+            ->prepare(TimeRepository::SELECT)
             ->willReturn($this->pdoStatementProphecy->reveal())
             ->shouldBeCalledOnce();
 
@@ -65,7 +80,7 @@ class TimeRepositoryTest extends TestCase
             ->shouldBeCalledOnce();
 
         $this->pdoStatementProphecy
-            ->fetch(PDO::FETCH_ASSOC)
+            ->fetch()
             ->willReturn($this->raw)
             ->shouldBeCalledOnce();
 
@@ -86,4 +101,102 @@ class TimeRepositoryTest extends TestCase
             $this->timeRepository->timeOfId(self::ID)
         );
     }
+
+    public function testCreateTime(): void
+    {
+        $this->pdoProphecy
+            ->prepare(TimeRepository::INSERT)
+            ->willReturn($this->pdoStatementProphecy->reveal())
+            ->shouldBeCalledOnce();
+
+        $this->pdoProphecy
+            ->lastInsertId()
+            ->willReturn(self::ID)
+            ->shouldBeCalledOnce();
+
+        $raw = $this->raw;
+        unset($raw['id']);
+        $this->pdoStatementProphecy
+            ->execute($raw)
+            ->willReturn(true)
+            ->shouldBeCalledOnce();
+
+        $this->pdoProphecy
+            ->prepare(TimeRepository::SELECT)
+            ->willReturn($this->pdoStatementProphecy->reveal())
+            ->shouldBeCalledOnce();
+
+        $this->pdoStatementProphecy
+            ->execute(['id' => self::ID])
+            ->willReturn(true)
+            ->shouldBeCalledOnce();
+
+        $this->pdoStatementProphecy
+            ->fetch()
+            ->willReturn($this->raw)
+            ->shouldBeCalledOnce();
+
+        $expected = new Time(
+            self::ID,
+            self::DATE,
+            self::START,
+            self::END,
+            self::HOURS,
+            self::ACCOUNT,
+            self::TASK,
+            self::NOTES,
+            self::BILLABLE
+        );
+
+        $this->assertEquals(
+            $expected,
+            $this->timeRepository->createTime($raw)
+        );
+    }
+
+    public function testSaveTime(): void
+    {
+        $this->pdoProphecy
+            ->prepare(TimeRepository::UPDATE)
+            ->willReturn($this->pdoStatementProphecy->reveal())
+            ->shouldBeCalledOnce();
+
+        $this->pdoStatementProphecy
+            ->execute($this->raw)
+            ->willReturn(true)
+            ->shouldBeCalledOnce();
+
+        $this->pdoProphecy
+            ->prepare(TimeRepository::SELECT)
+            ->willReturn($this->pdoStatementProphecy->reveal())
+            ->shouldBeCalledOnce();
+
+        $this->pdoStatementProphecy
+            ->execute(['id' => self::ID])
+            ->willReturn(true)
+            ->shouldBeCalledOnce();
+
+        $this->pdoStatementProphecy
+            ->fetch()
+            ->willReturn($this->raw)
+            ->shouldBeCalledOnce();
+
+        $expected = new Time(
+            self::ID,
+            self::DATE,
+            self::START,
+            self::END,
+            self::HOURS,
+            self::ACCOUNT,
+            self::TASK,
+            self::NOTES,
+            self::BILLABLE
+        );
+
+        $this->assertEquals(
+            $expected,
+            $this->timeRepository->saveTime($expected)
+        );
+    }
+
 }
