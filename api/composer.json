@@ -41,6 +41,7 @@
         }
     },
     "scripts": {
+        "coverage": "export XDEBUG_MODE=coverage; phpunit --coverage-html ./logs/coverage",
         "start": "php -S localhost:8080 -t public",
         "test": "phpunit"
     }

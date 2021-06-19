@@ -13,28 +13,31 @@ class TimeValidatorTest extends TestCase
     const
         DATE     = '2021-01-01',
         START    = '13:00',
-        END      = '14:00',
-        HOURS    = '1.00',
+        END      = '14:30',
+        HOURS    = '1.50',
         ACCOUNT  = 'Dayjob',
         TASK     = 'Code Review',
         NOTES    = 'Code review all the things',
         BILLABLE = '1'
-    ;
+        ;
+
+    private $request = [
+        'date'     => self::DATE,
+        'start'    => self::START,
+        'end'      => self::END,
+        'hours'    => self::HOURS,
+        'account'  => self::ACCOUNT,
+        'task'     => self::TASK,
+        'notes'    => self::NOTES,
+        'billable' => self::BILLABLE,
+        'extra'    => 'Extra submitted field'
+    ];
+
 
     public function testValidatorNormalizesArgs(): void
     {
         // Requests are entirely strings...
-        $request = [
-            'date'     => self::DATE,
-            'start'    => self::START,
-            'end'      => self::END,
-            'hours'    => self::HOURS,
-            'account'  => self::ACCOUNT,
-            'task'     => self::TASK,
-            'notes'    => self::NOTES,
-            'billable' => self::BILLABLE,
-            'extra'    => 'Extra submitted field'
-        ];
+        $request = $this->request;
 
         // Extra fields removed, values cast to correct types...
         $expected = $request;
@@ -50,42 +53,48 @@ class TimeValidatorTest extends TestCase
         );
     }
 
-    public function testValidatorRequiresRequiredFields(): void
+    /**
+     * @dataProvider requiredFieldProvider
+     */
+    public function testValidatorRequiresRequiredFields($missingField): void
     {
         try {
             $TimeValidator = new TimeValidator([]);
             $TimeValidator->get();
         } catch (TimeValidationException $e) {
-            $missingfields = [
-                'date',
-                'start',
-                'end',
-                'hours',
-                'account',
-                'task',
-                'notes',
-                'billable'
-            ];
-            array_map(function($missingField) use ($e) {
-                $this->assertChainHasException(
-                    $missingField,
-                    sprintf(
-                        TimeValidationException::MISSING_REQUIRED_FIELD,
-                        $missingField
-                    ),
-                    $e
-                );
-            });
+            $this->assertChainHasException(
+                $missingField,
+                sprintf(
+                    TimeValidationException::MISSING_REQUIRED_FIELD,
+                    $missingField
+                ),
+                $e
+            );
         }
+    }
+
+    public function requiredFieldProvider(): array
+    {
+        return [
+                ['date'],
+                ['start'],
+                ['end'],
+                ['hours'],
+                ['account'],
+                ['task'],
+                ['notes'],
+                ['billable'],
+            ];
     }
 
     public function testValidatorValidatesDateParses(): void
     {
+        $request = $this->request;
+        $request['date'] = 'January 01, 2022';
+
         try {
             // Invalid month and day...
-            $TimeValidator = new TimeValidator([
-                'date' => '2021-13-45'
-            ]);
+            $TimeValidator = new TimeValidator($request);
             $TimeValidator->get();
         } catch (TimeValidationException $e) {
             $this->assertChainHasException(
@@ -98,12 +107,13 @@ class TimeValidatorTest extends TestCase
 
     public function testValidatorValidatesStartAndEndParses(): void
     {
+        $request = $this->request;
+        $request['start'] = '01:00 PM';
+        $request['end'] = '02:00 PM';
+
         try {
             // Start/End should be in 24H time...
-            $TimeValidator = new TimeValidator([
-                'start' => "01:00 PM",
-                'end' => '02:00 PM'
-            ]);
+            $TimeValidator = new TimeValidator($request);;
             $TimeValidator->get();
         } catch (TimeValidationException $e) {
             $this->assertChainHasException(
@@ -121,12 +131,13 @@ class TimeValidatorTest extends TestCase
 
     public function testValidatorValidatesEndsAfterStart(): void
     {
+        $request = $this->request;
+        $request['start'] = '14:00';
+        $request['end'] = '13:00';
+
         try {
             // Ends before it begins...
-            $TimeValidator = new TimeValidator([
-                'start' => '14:00',
-                'end' => '13:00'
-            ]);
+            $TimeValidator = new TimeValidator($request);
             $TimeValidator->get();
         } catch (TimeValidationException $e) {
             $this->assertChainHasException(
@@ -139,11 +150,12 @@ class TimeValidatorTest extends TestCase
 
     public function testValidateHoursIsGreaterThanZero(): void
     {
+        $request = $this->request;
+        $request['hours'] = '0';
+
         try {
             // Hours is 0
-            $TimeValidator = new TimeValidator([
-                'hours' => '0'
-            ]);
+            $TimeValidator = new TimeValidator($request);
             $TimeValidator->get();
         } catch (TimeValidationException $e) {
             $this->assertChainHasException(
@@ -156,11 +168,11 @@ class TimeValidatorTest extends TestCase
 
     public function testValidateHoursParsesToFloat(): void
     {
+        $request = $this->request;
+        $request['hours'] = 'Hello';
+
         try {
-            // Hours is 0
-            $TimeValidator = new TimeValidator([
-                'hours' => 'Hello'
-            ]);
+            $TimeValidator = new TimeValidator($request);
             $TimeValidator->get();
         } catch (TimeValidationException $e) {
             $this->assertChainHasException(
@@ -177,13 +189,13 @@ class TimeValidatorTest extends TestCase
 
     public function testValidateHoursIsALie(): void
     {
+        $request = $this->request;
+        $request ['start'] = '13:00';
+        $request['end'] = '14:00';
+        $request['hours']= '8.00';
+
         try {
-            // Hours is 0
-            $TimeValidator = new TimeValidator([
-                'start' => '13:00',
-                'end'   => '14:00',
-                'hours' => '8.00'
-            ]);
+            $TimeValidator = new TimeValidator($request);
             $TimeValidator->get();
         } catch (TimeValidationException $e) {
             $this->assertChainHasException(
@@ -196,12 +208,42 @@ class TimeValidatorTest extends TestCase
 
     public function testAccountMayNotContainCommas(): void
     {
-        $this->markTestSkipped();
+        $request = $this->request;
+        $request['account'] = 'Personal,Chores';
+
+        try {
+            $TimeValidator = new TimeValidator($request);
+            $TimeValidator->get();
+        } catch (TimeValidationException $e) {
+            $this->assertChainHasException(
+                'account',
+                sprintf(
+                    TimeValidationException::COMMAS_NOT_ALLOWED,
+                    'account'
+                ),
+                $e
+            );
+        }
     }
 
     public function testTaskMayNotContainCommas(): void
     {
-        $this->markTestSkipped();
+        $request = $this->request;
+        $request['task'] = 'Dishes,Laundry';
+
+        try {
+            $TimeValidator = new TimeValidator($request);
+            $TimeValidator->get();
+        } catch (TimeValidationException $e) {
+            $this->assertChainHasException(
+                'task',
+                sprintf(
+                    TimeValidationException::COMMAS_NOT_ALLOWED,
+                    'task'
+                ),
+                $e
+            );
+        }
     }
 
     private function assertChainHasException(string $field, string $message, TimeValidationException $e)
@@ -209,10 +251,10 @@ class TimeValidatorTest extends TestCase
         $hasException = false;
         do {
             $message = sprintf(
-                TimeValidationException::MISSING_REQUIRED_FIELD,
-                $missingField
+                $message,
+                $field
             );
-            if ($e->getField() === $missingField &&
+            if ($e->getField() === $field &&
                 $e->getMessage() == $message
             ) {
                 $hasException = true;

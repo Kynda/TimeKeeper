@@ -8,6 +8,7 @@ use App\Domain\DomainException\DomainValidationException;
 class TimeValidationException extends DomainValidationException
 {
     const
+        COMMAS_NOT_ALLOWED          = "The %s field may not contain commas.",
         INVALID_DATE_FORMAT         = "Date format must conform to ISO8601",
         INVALID_TIME_FORMAT         = "Time format must conform to ISO8601",
         INVALID_TIME_RANGE          = "End must be after Start",
