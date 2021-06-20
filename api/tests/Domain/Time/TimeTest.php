@@ -5,67 +5,30 @@ declare(strict_types=1);
 namespace Tests\Domain\Time;
 
 use App\Domain\Time\Time;
-use Tests\TestCase;
 
-class TimeTest extends TestCase
+class TimeTest extends TimeTestCase
 {
-    const
-        ID       = 1,
-        DATE     = '2021-01-01',
-        START    = '13:00',
-        END      = '14:00',
-        HOURS    = 1.00,
-        ACCOUNT  = 'Dayjob',
-        TASK     = 'Code Review',
-        NOTES    = 'Code review all the things',
-        BILLABLE = true
-    ;
-
     public function testJsonSerialize()
     {
-        $time = new Time(
-            self::ID,
-            self::DATE,
-            self::START,
-            self::END,
-            self::HOURS,
-            self::ACCOUNT,
-            self::TASK,
-            self::NOTES,
-            self::BILLABLE
-        );
-
         $expected = json_encode([
-            'id'       => self::ID,
+            'id'       => (int)self::ID,
             'date'     => self::DATE,
             'end'      => self::END,
             'start'    => self::START,
-            'hours'    => self::HOURS,
+            'hours'    => (float)self::HOURS,
             'account'  => self::ACCOUNT,
             'task'     => self::TASK,
             'notes'    => self::NOTES,
             'billable' => self::BILLABLE
         ]);
 
-        $this->assertEquals($expected, json_encode($time));
+        $this->assertEquals($expected, json_encode($this->time()));
     }
 
     public function testWith()
     {
-         $time = new Time(
-            self::ID,
-            self::DATE,
-            self::START,
-            self::END,
-            self::HOURS,
-            self::ACCOUNT,
-            self::TASK,
-            self::NOTES,
-            self::BILLABLE
-         );
-
         $expected = new Time(
-            self::ID,
+            (int)self::ID,
             '2021-06-13',
             '15:00',
             '17:00',
@@ -75,6 +38,8 @@ class TimeTest extends TestCase
             'Hiked Mail Trail 125',
             false
         );
+
+        $time = $this->time();
 
         $timeWithNewProperties = $time->with([
             'date'     => '2021-06-13',

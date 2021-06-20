@@ -27,9 +27,9 @@ class TimeService
         return new Item($time, new TimeTransformer(), 'time');
     }
 
-    public function deleteTimeOfId(int $id): void
+    public function deleteTimeOfId(int $id): bool
     {
-        $this->timeRepository->deleteTimeOfId($id);
+        return $this->timeRepository->deleteTimeOfId($id);
     }
 
     public function findTimeResourceOfId(int $id): Item
@@ -55,7 +55,7 @@ class TimeService
             (new TimeValidator($args))->get()
         );
 
-        $this->timeRepository->saveTime($time);
+        $time = $this->timeRepository->saveTime($time);
 
         return new Item($time, new TimeTransformer(), 'time');
     }

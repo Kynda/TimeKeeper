@@ -81,10 +81,10 @@ QUERY;
     /**
      * @param int $id
      */
-    public function deleteTimeOfId(int $id): void
+    public function deleteTimeOfId(int $id): bool
     {
         $statement = $this->pdo->prepare(self::DELETE);
-        $statement->execute(['id' => $id]);
+        return $statement->execute(['id' => $id]);
     }
 
     /**

@@ -6,34 +6,9 @@ namespace Tests\Domain\Time;
 
 use App\Domain\Time\TimeValidationException;
 use App\Domain\Time\TimeValidator;
-use Tests\TestCase;
 
-class TimeValidatorTest extends TestCase
+class TimeValidatorTest extends TimeTestCase
 {
-    const
-        DATE     = '2021-01-01',
-        START    = '13:00',
-        END      = '14:30',
-        HOURS    = '1.50',
-        ACCOUNT  = 'Dayjob',
-        TASK     = 'Code Review',
-        NOTES    = 'Code review all the things',
-        BILLABLE = '1'
-        ;
-
-    private $request = [
-        'date'     => self::DATE,
-        'start'    => self::START,
-        'end'      => self::END,
-        'hours'    => self::HOURS,
-        'account'  => self::ACCOUNT,
-        'task'     => self::TASK,
-        'notes'    => self::NOTES,
-        'billable' => self::BILLABLE,
-        'extra'    => 'Extra submitted field'
-    ];
-
-
     public function testValidatorNormalizesArgs(): void
     {
         // Requests are entirely strings...
