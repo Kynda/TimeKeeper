@@ -68,9 +68,10 @@ class TestCase extends PHPUnit_TestCase
     protected function createRequest(
         string $method,
         string $path,
+        array $body = null,
         array $headers = ['HTTP_ACCEPT' => 'application/json'],
         array $cookies = [],
-        array $serverParams = []
+        array $serverParams = [],
     ): Request {
         $uri = new Uri('', '', 80, $path);
         $handle = fopen('php://temp', 'w+');
@@ -81,6 +82,7 @@ class TestCase extends PHPUnit_TestCase
             $h->addHeader($name, $value);
         }
 
-        return new SlimRequest($method, $uri, $h, $cookies, $serverParams, $stream);
+        return (new SlimRequest($method, $uri, $h, $cookies, $serverParams, $stream))
+            ->withParsedBody($body);
     }
 }

@@ -15,7 +15,7 @@ class CreateTimeAction extends TimeAction
     {
         return $this->respondWithResource(
             $this->timeService->createTimeResource(
-                $this->request->getParsedBody()
+                $this->request->getParsedBody() ?? []
             ),
             201
         );

@@ -60,7 +60,7 @@ class HttpErrorHandler extends SlimErrorHandler
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    private function unpackException(\Exception $exception): array
+    private function unpackException(\Throwable $exception): array
     {
         switch(true) {
             case $exception instanceof HttpNotFoundException:
