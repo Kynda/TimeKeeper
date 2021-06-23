@@ -178,7 +178,11 @@ class Time implements JsonSerializable
         ];
     }
 
-    public function with(array $args)
+    /**
+     * @param array $args
+     * @return Time
+     */
+    public function with(array $args): Time
     {
         return new self(
             $this->getId(),

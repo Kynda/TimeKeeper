@@ -17,7 +17,7 @@ class CreateTimeActionTest extends TimeActionTestCase
         $this
             ->timeServiceProphecy
             ->createTimeResource($this->requestBody)
-            ->willReturn($this->item());
+            ->willReturn($this->timeItem());
 
         $request = $this->createRequest('POST', '/time', $this->requestBody);
         $response = $this->app->handle($request);
@@ -26,7 +26,7 @@ class CreateTimeActionTest extends TimeActionTestCase
 
         $expectedPayload = new ActionPayload(
             201,
-            $this->resourceArray($this->item())
+            $this->resourceArray($this->timeItem())
         );
         $serializedPayload = json_encode($expectedPayload, JSON_PRETTY_PRINT);
 

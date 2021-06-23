@@ -14,9 +14,7 @@ class ListTimeAccountAction extends TimeAction
     public function action(): Response
     {
         return $this->respondWithResource(
-            $this->timeService->findTimeResourceOfId(
-                (int)$this->resolveArg('id')
-            )
+            $this->timeService->collectTimeAccounts()
         );
     }
 }

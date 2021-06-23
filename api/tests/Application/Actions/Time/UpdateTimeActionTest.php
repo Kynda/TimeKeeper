@@ -19,7 +19,7 @@ class UpdateTimeActionTest extends TimeActionTestCase
         $this
             ->timeServiceProphecy
             ->updateTimeResourceOfId(self::ID, $this->requestBody)
-            ->willReturn($this->item());
+            ->willReturn($this->timeItem());
 
         $request = $this->createRequest('PUT', '/time/' . self::ID, $this->requestBody);
         $response = $this->app->handle($request);
@@ -28,7 +28,7 @@ class UpdateTimeActionTest extends TimeActionTestCase
 
         $expectedPayload = new ActionPayload(
             200,
-            $this->resourceArray($this->item())
+            $this->resourceArray($this->timeItem())
         );
         $serializedPayload = json_encode($expectedPayload, JSON_PRETTY_PRINT);
 

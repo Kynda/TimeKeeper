@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Time;
 
+use App\Domain\Time\TimeAccount;
 use App\Domain\Time\TimeRecordNotFoundException;
 use App\Domain\Time\TimeTransformer;
+use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 
 class TimeService
@@ -16,6 +18,15 @@ class TimeService
         TimeRepository $timeRepository
     ) {
         $this->timeRepository = $timeRepository;
+    }
+
+    public function collectTimeAccounts(): Collection
+    {
+        return new Collection(
+            $this->timeRepository->listDistinctAccounts(),
+            new TimeAccountTransformer(),
+            'account'
+        );
     }
 
     public function createTimeResource(array $args): Item

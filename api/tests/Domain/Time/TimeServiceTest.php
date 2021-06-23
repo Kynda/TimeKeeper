@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Domain\Time;
 
+use App\Domain\Time\TimeAccount;
+use App\Domain\Time\TimeAccountTransformer;
 use App\Domain\Time\TimeRepository;
 use App\Domain\Time\TimeRecordNotFoundException;
 use App\Domain\Time\TimeService;
 use App\Domain\Time\TimeTransformer;
 use App\Domain\Time\TimeValidator;
+use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 
 class TimeServiceTest extends TimeTestCase
@@ -106,5 +109,26 @@ class TimeServiceTest extends TimeTestCase
             ->shouldBeCalledOnce();
 
         $this->service->updateTimeResourceOfId((int)self::ID, $this->request);
+    }
+
+    public function testCollectTimeAccounts(): void
+    {
+        $accounts = [
+            new TimeAccount('DayJob'),
+            new TimeAccount('Personal')
+        ];
+
+        $this
+            ->repositoryProphecy
+            ->listDistinctAccounts()
+            ->willReturn($accounts)
+            ->shouldBeCalledOnce();
+
+        $expected = new Collection($accounts, new TimeAccountTransformer(), 'account');
+
+        $this->assertEquals(
+            $expected,
+            $this->service->collectTimeAccounts()
+        );
     }
 }

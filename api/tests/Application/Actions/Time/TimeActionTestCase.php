@@ -6,10 +6,12 @@ namespace Tests\Application\Actions\Time;
 
 use App\Application\Handlers\HttpErrorHandler;
 use App\Domain\Time\Time;
+use App\Domain\Time\TimeAccount;
 use App\Domain\Time\TimeTransformer;
 use App\Domain\Time\TimeService;
 use Prophecy\PhpUnit\ProphecyTrait;
 use League\Fractal\Resource\ResourceInterface;
+use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 use League\Fractal\Manager;
 use League\Fractal\Serializer\JsonApiSerializer;
@@ -47,7 +49,7 @@ abstract class TimeActionTestCase extends TestCase
         'extra'    => 'Extra submitted field'
     ];
 
-    protected function item(): Item
+    protected function timeItem(): Item
     {
         return new Item(
             new Time(
@@ -63,6 +65,14 @@ abstract class TimeActionTestCase extends TestCase
             ),
             new TimeTransformer(),
             'time'
+        );
+    }
+
+    protected function timeAccountCollection(): Collection
+    {
+        return new Collection(
+            new TimeAccount('DayJob'),
+            new TimeAccount('Personal')
         );
     }
 
