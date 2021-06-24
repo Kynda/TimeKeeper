@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Domain\Time;
 
-use PDO;
-use PDOStatement;
 use App\Domain\DomainException\DomainStatementException;
 use App\Domain\Time\Time;
 use App\Domain\Time\TimeAccount;
 use App\Domain\Time\TimeRepository;
+use PDO;
+use PDOStatement;
 
 class TimeRepositoryTest extends TimeTestCase
 {
@@ -148,35 +148,6 @@ class TimeRepositoryTest extends TimeTestCase
         $this->assertEquals(
             $this->time(),
             $this->timeRepository->saveTime($this->time())
-        );
-    }
-
-    public function testListDistinctAccounts(): void
-    {
-        $this
-            ->pdoProphecy
-            ->prepare(TimeRepository::LIST_ACCOUNTS)
-            ->willReturn($this->pdoStatementProphecy->reveal())
-            ->shouldBeCalledOnce();
-
-        $this
-            ->pdoStatementProphecy
-            ->execute()
-            ->willReturn(true)
-            ->shouldBeCalledOnce();
-
-        $this
-            ->pdoStatementProphecy
-            ->fetchAll()
-            ->willReturn([
-                ['account' => 'DayJob'],
-                ['account' => 'Personal']
-            ])
-            ->shouldBeCalledOnce();
-
-        $this->assertEquals(
-            [new TimeAccount('DayJob'), new TimeAccount('Personal')],
-            $this->timeRepository->listDistinctAccounts()
         );
     }
 }

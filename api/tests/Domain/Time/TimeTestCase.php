@@ -41,8 +41,8 @@ abstract class TimeTestCase extends TestCase
         'start'    => self::START,
         'end'      => self::END,
         'hours'    => self::HOURS,
-        'account'  => self::ACCOUNT,
-        'task'     => self::TASK,
+        'account'  => self::ACCOUNT . ' ',
+        'task'     => self::TASK . ' ',
         'notes'    => self::NOTES,
         'billable' => self::BILLABLE,
         'extra'    => 'Extra submitted field'

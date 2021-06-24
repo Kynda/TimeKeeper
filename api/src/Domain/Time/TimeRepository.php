@@ -51,10 +51,6 @@ UPDATE time SET
 WHERE id = :id
 QUERY;
 
-    const LIST_ACCOUNTS = <<<QUERY
-SELECT DISTINCT(account) FROM time WHERE users_id = 4 ORDER BY account
-QUERY;
-
     /**
      * @var PDO
      */
@@ -89,18 +85,6 @@ QUERY;
     {
         $statement = $this->pdo->prepare(self::DELETE);
         return $statement->execute(['id' => $id]);
-    }
-
-    public function listDistinctAccounts(): array
-    {
-        $statement = $this->pdo->prepare(self::LIST_ACCOUNTS);
-        $statement->execute();
-        $accounts = [];
-        $results = $statement->fetchAll();
-
-        return array_map(function(array $raw): TimeAccount {
-            return new TimeAccount($raw['account']);
-        }, $results);
     }
 
     /**

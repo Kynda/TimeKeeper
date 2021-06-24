@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Tests\Domain\Time;
+namespace Tests\Domain\Account;
 
-use App\Domain\Time\TimeAccount;
-use App\Domain\Time\TimeAccountTransformer;
+use App\Domain\Account\Account;
+use App\Domain\Account\AccountTransformer;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Serializer\JsonApiSerializer;
+use Tests\TestCase;
 
-class TimeAccountTransformerTest extends TimeTestCase
+class AccountTransformerTest extends TestCase
 {
-    public function testTransformTimeAccountResource(): void
+    public function testTransformAccountResource(): void
     {
         $manager = new Manager();
 
@@ -20,8 +21,8 @@ class TimeAccountTransformerTest extends TimeTestCase
         $manager->setSerializer(new JsonApiSerializer($baseUrl));
 
         $resource = new Collection(
-            [new TimeAccount('DayJob'), new TimeAccount('Personal')],
-            new TimeAccountTransformer(),
+            [new Account('DayJob'), new Account('Personal')],
+            new AccountTransformer(),
             'account'
         );
 

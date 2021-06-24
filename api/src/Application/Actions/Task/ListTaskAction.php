@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Actions\Time;
+namespace App\Application\Actions\Task;
 
 use Psr\Http\Message\ResponseInterface as Response;
 
-class ListTimeAccountAction extends TimeAction
+class ListTaskAction extends TimeAction
 {
     /**
      * {@inheritdoc}
@@ -14,7 +14,9 @@ class ListTimeAccountAction extends TimeAction
     public function action(): Response
     {
         return $this->respondWithResource(
-            $this->timeService->collectTimeAccounts()
+            $this->taskService->collectTasks(
+                (int)$this->resolveArg('id')
+            )
         );
     }
 }

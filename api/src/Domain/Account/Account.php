@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Time;
+namespace App\Domain\Account;
 
 use JsonSerializable;
 
-class TimeAccount implements JsonSerializable
+class Account implements JsonSerializable
 {
     /**
      * @var string
@@ -36,9 +36,9 @@ class TimeAccount implements JsonSerializable
 
     /**
      * @param array $args
-     * @return TimeAccount
+     * @return Account
      */
-    public function with(array $args): TimeAccount
+    public function with(array $args): Account
     {
         return new self($args['account'] ?? $this->getAccount());
     }

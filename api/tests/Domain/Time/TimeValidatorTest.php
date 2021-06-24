@@ -16,6 +16,8 @@ class TimeValidatorTest extends TimeTestCase
 
         // Extra fields removed, values cast to correct types...
         $expected = $request;
+        $expected['account'] = trim($expected['account']);
+        $expected['task'] = trim($expected['task']);
         $expected['hours'] = (float)$expected['hours'];
         $expected['billable'] = (bool)$expected['billable'];
         unset($expected['extra']);

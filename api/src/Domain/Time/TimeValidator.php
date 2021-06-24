@@ -49,8 +49,8 @@ class TimeValidator
             'start'    => $this->args['start'],
             'end'      => $this->args['end'],
             'hours'    => (float)$this->args['hours'],
-            'account'  => $this->args['account'],
-            'task'     => $this->args['task'],
+            'account'  => trim($this->args['account']),
+            'task'     => trim($this->args['task']),
             'notes'    => $this->args['notes'],
             'billable' => (bool)$this->args['billable']
         ];

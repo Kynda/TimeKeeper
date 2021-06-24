@@ -1,28 +1,28 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Actions\Time;
+namespace App\Application\Actions\Task;
 
 use App\Application\Actions\Action;
-use App\Domain\Time\TimeService;
+use App\Domain\Task\TaskService;
 use Psr\Log\LoggerInterface;
 
-abstract class TimeAction extends Action
+abstract class TaskAction extends Action
 {
     /**
-     * @var timeService
+     * @var taskService
      */
-    protected $timeService;
+    protected $taskService;
 
     /**
      * @param LoggerInterface $logger
-     * @param TimeRepository $timeRepository
+     * @param TaskRepository $TaskRepository
      */
     public function __construct(
         LoggerInterface $logger,
-        TimeService $timeService
+        TaskService $taskService
     ) {
         parent::__construct($logger);
-        $this->timeService = $timeService;
+        $this->taskService = $taskService;
     }
 }
