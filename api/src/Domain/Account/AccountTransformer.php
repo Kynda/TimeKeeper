@@ -8,6 +8,10 @@ use League\Fractal\TransformerAbstract;
 
 class AccountTransformer extends TransformerAbstract
 {
+    /**
+     * @param Account $account
+     * @return array
+     */
     public function transform(Account $account)
     {
         return array_merge(

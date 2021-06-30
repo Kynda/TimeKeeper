@@ -4,6 +4,7 @@ declare(strict_types=1);
 use App\Application\Actions\Account\ListAccountAction;
 use App\Application\Actions\Account\ViewAccountAction;
 use App\Application\Actions\Task\ListTaskAction;
+use App\Application\Actions\Task\ListTaskInAccountAction;
 use App\Application\Actions\Task\ViewTaskAction;
 use App\Application\Actions\Time\CreateTimeAction;
 use App\Application\Actions\Time\DeleteTimeAction;
@@ -23,6 +24,7 @@ return function (App $app) {
 
     $app->get('/account', ListAccountAction::class);
     $app->get('/account/{account}', ViewAccountAction::class);
+    $app->get('/account/{account}/tasks', ListTaskInAccountAction::class);
 
     $app->get('/task', ListTaskAction::class);
     $app->get('/task/{task}', ViewTaskAction::class);

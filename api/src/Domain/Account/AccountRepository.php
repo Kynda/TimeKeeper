@@ -39,6 +39,9 @@ QUERY;
         $this->pdo = $pdo;
     }
 
+    /**
+     * @return Account[]
+     */
     public function listDistinctAccounts(): array
     {
         $statement = $this->pdo->prepare(self::LIST);

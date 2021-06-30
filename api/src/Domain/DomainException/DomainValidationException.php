@@ -29,6 +29,9 @@ class DomainValidationException extends DomainException
         $this->field = $field;
     }
 
+    /**
+     * @return string|null
+     */
     public function getField(): ?string
     {
         return $this->field;

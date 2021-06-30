@@ -11,14 +11,24 @@ use League\Fractal\Resource\Item;
 
 class TimeService
 {
+    /**
+     * @var TimeRepository $timeRepository
+     */
     private $timeRepository;
 
+    /**
+     * @param TimeRepository $timeRepository
+     */
     public function __construct(
         TimeRepository $timeRepository
     ) {
         $this->timeRepository = $timeRepository;
     }
 
+    /**
+     * @param array $args
+     * @return Item
+     */
     public function createTimeResource(array $args): Item
     {
         $time = $this->timeRepository->createTime(
@@ -28,11 +38,19 @@ class TimeService
         return new Item($time, new TimeTransformer(), 'time');
     }
 
+    /**
+     * @param int $id
+     * @return bool
+     */
     public function deleteTimeOfId(int $id): bool
     {
         return $this->timeRepository->deleteTimeOfId($id);
     }
 
+    /**
+     * @param int $id
+     * @return ITem
+     */
     public function findTimeResourceOfId(int $id): Item
     {
         $time = $this->timeRepository->timeOfId($id);
@@ -44,6 +62,11 @@ class TimeService
         return new Item($time, new TimeTransformer(), 'time');
     }
 
+    /**
+     * @param int $id
+     * @param array $args
+     * @return Item
+     */
     public function updateTimeResourceOfId(int $id, array $args): Item
     {
         $time = $this->timeRepository->timeOfId($id);

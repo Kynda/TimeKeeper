@@ -131,6 +131,11 @@ class TimeValidator
         return $this;
     }
 
+    /**
+     * Validate Date is a valid ISO-8601 value
+     *
+     * @return self
+     */
     private function validateDateParses(): self
     {
         if (!\DateTimeImmutable::createFromFormat('Y-m-d', $this->args['date'])) {
@@ -143,6 +148,11 @@ class TimeValidator
         return $this;
     }
 
+    /**
+     * Validate the start and end date times are valid ISO-8601 time segments
+     *
+     * @return self
+     */
     private function validateStartAndEndParses(): self
     {
         if (!\DateTimeImmutable::createFromFormat('H:i', $this->args['start'])) {
@@ -162,6 +172,11 @@ class TimeValidator
         return $this;
     }
 
+    /**
+     * Validate the end time occurs after the start time
+     *
+     * @return self
+     */
     private function validateEndsAfterStart(): self
     {
         $start = \DateTimeImmutable::createFromFormat(
@@ -184,6 +199,11 @@ class TimeValidator
         return $this;
     }
 
+    /**
+     * Validate the hours value is greater than zero
+     *
+     * @return self
+     */
     private function validateHoursIsGreaterThanZero(): self
     {
         if ($this->args['hours'] <= 0) {
@@ -195,6 +215,11 @@ class TimeValidator
         return $this;
     }
 
+    /**
+     * Validate the hours value can be parsed into a float
+     *
+     * @return self
+     */
     private function validateHoursParsesToFloat(): self
     {
         if (!is_numeric($this->args['hours'])) {
@@ -211,6 +236,12 @@ class TimeValidator
         return $this;
     }
 
+    /**
+     * Validate the hours value correctly represents the date-time interval
+     * between the start and end values
+     *
+     * @return self
+     */
     private function validateHoursIntervalIsCorrect(): self
     {
         $start = \DateTimeImmutable::createFromFormat(
@@ -240,6 +271,11 @@ class TimeValidator
         return $this;
     }
 
+    /**
+     * Validate the account field does not contain a comma
+     *
+     * @return self
+     */
     public function validateAccountMayNotContainCommas(): self
     {
         if (false !== strpos($this->args['account'], ",")) {
@@ -255,6 +291,11 @@ class TimeValidator
         return $this;
     }
 
+    /**
+     * Validate the task field does not contain a comma
+     *
+     * @return self
+     */
     public function validateTaskMayNotContainCommas(): self
     {
         if (false !== strpos($this->args['task'], ",")) {

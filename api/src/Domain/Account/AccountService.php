@@ -12,14 +12,20 @@ use League\Fractal\Resource\Item;
 
 class AccountService
 {
+    /**
+     * @var AccountRepository
+     */
     private $accountRepository;
 
     public function __construct(
-        AccountRepository $accountRepository
+        AccountRepository $accountRepository,
     ) {
         $this->accountRepository = $accountRepository;
     }
 
+    /**
+     * @return Collection
+     */
     public function collectAccounts(): Collection
     {
         return new Collection(
@@ -29,6 +35,10 @@ class AccountService
         );
     }
 
+    /**
+     * @string $account
+     * @return Item
+     */
     public function findAccountResourceOfValue(string $account): Item
     {
         $account = $this->accountRepository->accountOfValue($account);

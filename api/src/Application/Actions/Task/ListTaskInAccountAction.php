@@ -6,7 +6,7 @@ namespace App\Application\Actions\Task;
 
 use Psr\Http\Message\ResponseInterface as Response;
 
-class ListTaskAction extends TaskAction
+class ListTaskInAccountAction extends TaskAction
 {
     /**
      * {@inheritdoc}
@@ -14,7 +14,7 @@ class ListTaskAction extends TaskAction
     public function action(): Response
     {
         return $this->respondWithResource(
-            $this->taskService->collectTasks()
+            $this->taskService->collectTasksInAccount($this->resolveArg('account'))
         );
     }
 }
