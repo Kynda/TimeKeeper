@@ -22,21 +22,21 @@ abstract class AccountActionTestCase extends TestCase
 {
     use ProphecyTrait;
 
-    protected $app;
-    protected $accountServiceProphecy;
-
     const
         ACCOUNT_DAYJOB   = 'DayJob',
         ACCOUNT_PERSONAL = 'Personal'
-    ;
+        ;
+
+    protected $app;
+    protected $accountServiceProphecy;
 
     protected $requestBody = [
-        'id' => self::ACCOUNT_DAYJOB
+        'account' => self::ACCOUNT_DAYJOB
     ];
 
     protected function accountItem(): Item
     {
-        return new Account(
+        return new Item(
             new Account(self::ACCOUNT_DAYJOB),
             new AccountTransformer(),
             'account'

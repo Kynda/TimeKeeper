@@ -34,6 +34,10 @@ INSERT INTO time (
 )
 QUERY;
 
+    const LIST = <<<QUERY
+SELECT * FROM time WHERE users_id = 4 LIMIT 100
+QUERY;
+
     const SELECT = <<<QUERY
 SELECT * FROM time WHERE id = :id
 QUERY;
@@ -85,6 +89,30 @@ QUERY;
     {
         $statement = $this->pdo->prepare(self::DELETE);
         return $statement->execute(['id' => $id]);
+    }
+
+    /**
+     * @return array
+     */
+    public function listTime(): array
+    {
+        $statement = $this->pdo->prepare(self::LIST);
+        $statement->execute();
+        $results = $statement->fetchAll();
+
+        return array_map(function(array $raw): Time {
+            return new Time(
+                (int)$raw['id'],
+                $raw['date'],
+                $raw['start'],
+                $raw['end'],
+                (float)$raw['hours'],
+                $raw['account'],
+                $raw['task'],
+                $raw['notes'],
+                (bool)$raw['billable']
+            );
+        }, $results);
     }
 
     /**

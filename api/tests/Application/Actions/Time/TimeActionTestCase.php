@@ -68,12 +68,21 @@ abstract class TimeActionTestCase extends TestCase
         );
     }
 
-    protected function timeAccountCollection(): Collection
+    protected function timeCollection(): Collection
     {
-        return new Collection(
-            new TimeAccount('DayJob'),
-            new TimeAccount('Personal')
-        );
+        return new Collection([
+            new Time(
+                (int)self::ID,
+                self::DATE,
+                self::START,
+                self::END,
+                (float)self::HOURS,
+                self::ACCOUNT,
+                self::TASK,
+                self::NOTES,
+                self::BILLABLE
+            ),
+        ], new TimeTransformer(), 'time');
     }
 
     protected function resourceArray(ResourceInterface $resource): array

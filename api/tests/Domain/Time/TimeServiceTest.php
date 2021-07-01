@@ -108,4 +108,23 @@ class TimeServiceTest extends TimeTestCase
 
         $this->service->updateTimeResourceOfId((int)self::ID, $this->request);
     }
+
+    public function testCollectTime(): void
+    {
+        $times = [$this->time()];
+
+        $this
+            ->repositoryProphecy
+            ->listTime()
+            ->willReturn($times)
+            ->shouldBeCalledOnce();
+
+        $expected = new Collection($times, new TimeTransformer(), 'time');
+
+        $this->assertEquals(
+            $expected,
+            $this->service->collectTime()
+        );
+    }
+
 }

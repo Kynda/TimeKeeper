@@ -150,4 +150,32 @@ class TimeRepositoryTest extends TimeTestCase
             $this->timeRepository->saveTime($this->time())
         );
     }
+
+    public function testListTime(): void
+    {
+        $this
+            ->pdoProphecy
+            ->prepare(TimeRepository::LIST)
+            ->willReturn($this->pdoStatementProphecy->reveal())
+            ->shouldBeCalledOnce();
+
+        $this
+            ->pdoStatementProphecy
+            ->execute()
+            ->willReturn(true)
+            ->shouldBeCalledOnce();
+
+        $this
+            ->pdoStatementProphecy
+            ->fetchAll()
+            ->willReturn([$this->raw])
+            ->shouldBeCalledOnce();
+
+        $this->assertEquals(
+            [$this->time()],
+            $this->timeRepository->listTime()
+        );
+    }
+
+
 }

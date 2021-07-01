@@ -25,6 +25,15 @@ class TimeService
         $this->timeRepository = $timeRepository;
     }
 
+    public function collectTime(): Collection
+    {
+        return new Collection(
+            $this->timeRepository->listTime(),
+            new TimeTransformer(),
+            'time'
+        );
+    }
+
     /**
      * @param array $args
      * @return Item
